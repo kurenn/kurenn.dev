@@ -1,0 +1,17 @@
+# Abraham Kuri — One-Week AI Sprint
+
+> Personal sprint page for Abraham Kuri, CTO at Icalia Labs and published author of APIs on Rails.
+
+## Pages
+
+- [Home](https://kurenn.github.io/kuri-dev/): Abraham Kuri offers a one-week, $5,000 flat-rate AI application sprint — one client per month, full dedicated execution, production deployment included.
+
+## About
+
+Abraham Kuri is a software engineer and CTO with 15+ years of experience building and scaling products. He specializes in AI integration, rapid prototyping, and architecture for funded startups and established companies. He takes one sprint client per month.
+
+## Contact
+
+- GitHub: https://github.com/kurenn
+- LinkedIn: https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/
+- Icalia Labs: https://ai.icalialabs.com
