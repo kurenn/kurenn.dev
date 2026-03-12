@@ -4,7 +4,7 @@
 
 ## Pages
 
-- [Home](https://kurenn.github.io/kuri-dev/): Abraham Kuri offers a one-week, $5,000 flat-rate AI application sprint — one client per month, full dedicated execution, production deployment included.
+- [Home](https://kurenn.dev/): Abraham Kuri offers a one-week, $5,000 flat-rate AI application sprint — one client per month, full dedicated execution, production deployment included.
 
 ## About
 
