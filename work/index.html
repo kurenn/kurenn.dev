@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abraham Kuri — I build AI agent systems that actually ship</title>
+<meta name="description" content="Two multi-agent architectures, ten real Rails tasks, $144.72 on the meter. The finding: 69% of a multi-agent system's bill is agents talking to each other — not writing code. Full ledger, six open-source tools, and the four things that didn't work.">
+<link rel="canonical" href="https://kurenn.dev/work/">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://kurenn.dev/work/">
+<meta property="og:title" content="I build AI agent systems that actually ship">
+<meta property="og:description" content="69% of a multi-agent system's bill is agents talking to each other. $144.72 spent measuring it. Here's the full ledger — including the four things that didn't work.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@kurenn">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FBF8F1'/><text y='78' x='14' font-size='80' font-family='Georgia,serif' fill='%23C0392B'>K</text></svg>">
+<style>
+.sc-placeholder{background:color-mix(in srgb,currentColor 8%,transparent);
+      border:1px solid color-mix(in srgb,currentColor 50%,transparent);
+      border-radius:2px;box-sizing:border-box;overflow:hidden}
+    @keyframes sc-shine{0%{background-position:100% 50%}100%{background-position:0% 50%}}
+    html.sc-dc-streaming .sc-placeholder,
+    html.sc-dc-streaming .sc-interp.sc-missing{position:relative;
+      background:color-mix(in srgb,currentColor 5%,transparent);
+      border-color:transparent}
+    html.sc-dc-streaming .sc-placeholder::before,
+    html.sc-dc-streaming .sc-interp.sc-missing::before{content:'';
+      position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(90deg,rgba(217,119,87,0) 25%,rgba(247,225,211,.95) 37%,rgba(217,119,87,0) 63%);
+      background-size:400% 100%;animation:sc-shine 1.4s ease infinite}
+    html.sc-dc-streaming .sc-placeholder:nth-child(n+9 of .sc-placeholder)::before,
+    html.sc-dc-streaming .sc-interp.sc-missing:nth-child(n+9 of .sc-interp.sc-missing)::before{animation:none;
+      background:color-mix(in srgb,currentColor 8%,transparent)}
+    .sc-placeholder-error{padding:4px 8px;font:11px/1.4 ui-monospace,monospace;
+      color:color-mix(in srgb,currentColor 70%,transparent);word-break:break-word}
+    .sc-interp.sc-missing{display:inline-block;width:2em;height:1em;overflow:hidden;
+      vertical-align:text-bottom;background:rgba(255,255,255,.3);border:1px solid rgba(0,0,0,.5);
+      border-radius:2px;box-sizing:border-box;color:transparent;
+      user-select:none}
+    .sc-interp.sc-unresolved{font-family:ui-monospace,monospace;font-size:.85em;
+      color:color-mix(in srgb,currentColor 50%,transparent);
+      background:color-mix(in srgb,currentColor 10%,transparent);border-radius:3px;
+      padding:0 3px}
+    .sc-host.sc-has-error{position:relative}
+    .sc-logic-error{position:absolute;top:8px;left:8px;z-index:2147483647;max-width:60ch;
+      padding:6px 10px;background:#b00020;color:#fff;font:12px/1.4 ui-monospace,monospace;
+      border-radius:4px;white-space:pre-wrap;pointer-events:none}
+    /* Mirrors PRINT_BASELINE_CSS in apps/web deck-stage-export.ts — keep both
+       in sync until dc-runtime regains a build step. */
+    @media print {
+      @page { margin: 0.5cm; }
+      figure, table { break-inside: avoid; }
+      #dc-root, #dc-root > .sc-host { height: auto; }
+      *, *::before, *::after {
+        print-color-adjust: exact; -webkit-print-color-adjust: exact;
+        backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+        animation-delay: -99s !important; animation-duration: .001s !important;
+        animation-iteration-count: 1 !important; animation-fill-mode: both !important;
+        animation-play-state: running !important; transition-duration: 0s !important;
+      }
+    }
+  
+x-dc{display:none!important}
+
+html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/442b3ec987.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/f3e3ef5f4a.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/f299d916ba.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/108d509084.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/2c9bacf024.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/f49291b791.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/695a267637.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/062794e1a3.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/24397a3e83.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/3a2668b94b.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/c314a25c3a.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/1b68792e8d.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/7925a2dd6c.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/535a3114a7.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/c11adc9130.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/f345600864.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/3184335df9.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/0e959a3459.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/f345600864.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/3184335df9.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/0e959a3459.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/b232cde57b.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/5ca53eda01.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('fonts/662a6e2a1a.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/b232cde57b.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/5ca53eda01.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('fonts/662a6e2a1a.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/b232cde57b.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/5ca53eda01.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('fonts/662a6e2a1a.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+  :root{
+    --bg:#FBF8F1; --panel:#F3EEE3; --rule:#E0D9CA; --hair:#E8E2D5;
+    --ink:#17140E; --body:#413B30; --muted:#8B8474;
+    --accent:#CE3A22; --warn:#9A5A00; --neutral:#B3AC9C;
+    --serif:'Newsreader',Georgia,serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  [data-theme="dark"]{
+    --bg:#131109; --panel:#1D1A12; --rule:#332E22; --hair:#2A261C;
+    --ink:#F6F1E4; --body:#D2CABA; --muted:#928A78;
+    --accent:#FF6A4D; --warn:#E0A64B; --neutral:#5C554733;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:20px;}
+  body{margin:0;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;text-underline-offset:3px;}
+  summary::-webkit-details-marker{display:none;}
+  summary{list-style:none;}
+</style>
+</head>
+<body>
+
+
+<div id="dc-root"><div class="sc-host" data-sc-name="Root"><div data-dc-tpl="5" data-theme="light" style="background: var(--bg); color: var(--body); font-family: var(--serif); -webkit-font-smoothing: antialiased; min-height: 100vh; overflow-x: hidden;">
+  <main data-dc-tpl="6" style="max-width: 640px; margin: 0px auto; padding: 0px 26px;">
+
+    
+    <div data-dc-tpl="7" style="display: flex; justify-content: space-between; align-items: baseline; padding: 26px 0px 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);">
+      <span data-dc-tpl="8" style="color: var(--ink);">Abraham Kuri</span>
+      <span data-dc-tpl="9">Systems for AI agents</span>
+    </div>
+    <div data-dc-tpl="10" style="height: 2px; background: var(--ink);"></div>
+
+    
+    <section data-dc-tpl="11" style="padding: 44px 0px 40px;">
+      <div data-dc-tpl="12" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px;">Proof of work — 2026</div>
+      <h1 data-dc-tpl="13" style="font-family: var(--serif); font-weight: 500; font-size: clamp(34px, 7vw, 58px); line-height: 1.04; letter-spacing: -0.015em; color: var(--ink); margin: 0px 0px 22px; text-wrap: balance;">I build AI agent systems that <em data-dc-tpl="14" style="font-style: italic; color: var(--accent);">actually ship</em>.</h1>
+      <p data-dc-tpl="15" style="font-family: var(--serif); font-size: clamp(16px, 2.6vw, 19px); line-height: 1.6; color: var(--body); margin: 0px 0px 28px; max-width: 32em;">Fifteen years of Rails, now spent designing multi-agent architectures, the tooling that makes them trustworthy, and the prototypes that close the meeting. I ship in public and measure everything I build.</p>
+      <div data-dc-tpl="16" style="font-family: var(--mono); font-size: 12px; display: flex; gap: 20px; flex-wrap: wrap;">
+        <a data-dc-tpl="17" href="#s1">What I do ↓</a>
+        <a data-dc-tpl="18" href="https://github.com/kurenn">GitHub — 70 repos · 376★ ↗</a>
+        <a data-dc-tpl="19" href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/">LinkedIn ↗</a>
+      </div>
+    </section>
+
+    
+    <section data-dc-tpl="20" id="s1" style="padding: 8px 0px 36px; scroll-margin-top: 20px;">
+      <div data-dc-tpl="21" style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px;"><span data-dc-tpl="22" style="font-family: var(--serif); font-size: 30px; font-weight: 500; color: var(--accent); line-height: 1; font-feature-settings: &quot;lnum&quot;;">01</span><span data-dc-tpl="23" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);">What I do</span><span data-dc-tpl="24" style="flex: 1 1 0%; height: 1px; background: var(--rule);"></span></div>
+      <h2 data-dc-tpl="25" style="font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 4.4vw, 32px); line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); margin: 0px 0px 18px;">Five things I'm good at</h2>
+      <div data-dc-tpl="26" style="display: flex; flex-direction: column;">
+        <div data-dc-tpl="27" style="display: flex; gap: 18px; padding: 16px 0px; border-top: 1px solid var(--hair);"><div data-dc-tpl="28" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">01</div><div data-dc-tpl="29" style="flex: 1 1 0%;"><div data-dc-tpl="30" style="font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 3px;">Design agent architectures that stay cheap</div><div data-dc-tpl="31" style="font-size: 14.5px; line-height: 1.55; color: var(--body);">Triage before dispatch — single-digit-dollar agent teams where a naive swarm costs hundreds. <span data-dc-tpl="32" style="font-family: var(--mono); font-size: 11px; color: var(--accent);">roundhouse · dev-loop</span></div></div></div>
+        <div data-dc-tpl="33" style="display: flex; gap: 18px; padding: 16px 0px; border-top: 1px solid var(--hair);"><div data-dc-tpl="34" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">02</div><div data-dc-tpl="35" style="flex: 1 1 0%;"><div data-dc-tpl="36" style="font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 3px;">Go deep on Rails, fast</div><div data-dc-tpl="37" style="font-size: 14.5px; line-height: 1.55; color: var(--body);">Fifteen years auditing, refactoring and rescuing codebases, from two to two hundred engineers. <span data-dc-tpl="38" style="font-family: var(--mono); font-size: 11px; color: var(--accent);">rails-audit · boorails</span></div></div></div>
+        <div data-dc-tpl="39" style="display: flex; gap: 18px; padding: 16px 0px; border-top: 1px solid var(--hair);"><div data-dc-tpl="40" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">03</div><div data-dc-tpl="41" style="flex: 1 1 0%;"><div data-dc-tpl="42" style="font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 3px;">Build tooling that makes agents trustworthy</div><div data-dc-tpl="43" style="font-size: 14.5px; line-height: 1.55; color: var(--body);">Skills that force the model to <em data-dc-tpl="44" style="font-style: italic; color: var(--ink);">run</em> and return a receipt with a file path — not narrate. <span data-dc-tpl="45" style="font-family: var(--mono); font-size: 11px; color: var(--accent);">boorails · prompt-refiner</span></div></div></div>
+        <div data-dc-tpl="46" style="display: flex; gap: 18px; padding: 16px 0px; border-top: 1px solid var(--hair);"><div data-dc-tpl="47" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">04</div><div data-dc-tpl="48" style="flex: 1 1 0%;"><div data-dc-tpl="49" style="font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 3px;">Ship prototypes that close the meeting</div><div data-dc-tpl="50" style="font-size: 14.5px; line-height: 1.55; color: var(--body);">Production-feel, zero build, no lorem ipsum. Every button goes somewhere. <span data-dc-tpl="51" style="font-family: var(--mono); font-size: 11px; color: var(--accent);">claude-prototype</span></div></div></div>
+        <div data-dc-tpl="52" style="display: flex; gap: 18px; padding: 16px 0px; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair);"><div data-dc-tpl="53" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">05</div><div data-dc-tpl="54" style="flex: 1 1 0%;"><div data-dc-tpl="55" style="font-family: var(--serif); font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 3px;">Instrument everything, publish the failures</div><div data-dc-tpl="56" style="font-size: 14.5px; line-height: 1.55; color: var(--body);">I put the numbers — including the ugly ones — where anyone can check them. <span data-dc-tpl="57" style="font-family: var(--mono); font-size: 11px; color: var(--accent);">the proof below</span></div></div></div>
+      </div>
+    </section>
+
+    
+    <section data-dc-tpl="58" style="padding: 8px 0px 36px;">
+      <div data-dc-tpl="59" style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px;"><span data-dc-tpl="60" style="font-family: var(--serif); font-size: 30px; font-weight: 500; color: var(--accent); line-height: 1;">02</span><span data-dc-tpl="61" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);">Proof, not promises</span><span data-dc-tpl="62" style="flex: 1 1 0%; height: 1px; background: var(--rule);"></span></div>
+      <h2 data-dc-tpl="63" style="font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 4.4vw, 32px); line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); margin: 0px 0px 14px;">Capability 01, measured</h2>
+      <p data-dc-tpl="64" style="font-family: var(--serif); font-size: 16px; line-height: 1.65; color: var(--body); margin: 0px 0px 24px; max-width: 34em;">Two multi-agent architectures, the same ten Rails tasks, interleaved A/B, real money on the meter. The finding: <em data-dc-tpl="65" style="font-style: italic; color: var(--accent);">69% of a multi-agent system's bill is agents talking to each other</em> — not writing code. The work wasn't the bottleneck. The meeting was.</p>
+      <div data-dc-tpl="66" style="display: flex; flex-wrap: wrap; gap: 24px 44px; padding: 22px 0px; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); margin-bottom: 18px;">
+        <div data-dc-tpl="67" style="flex: 1 1 0%; min-width: 120px;"><div data-dc-tpl="68" style="font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 7vw, 46px); color: var(--accent); line-height: 0.95;">69%</div><div data-dc-tpl="69" style="font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; letter-spacing: 0.02em;">of spend was coordination. Peaked at 85.5%.</div></div>
+        <div data-dc-tpl="70" style="flex: 1 1 0%; min-width: 120px;"><div data-dc-tpl="71" style="font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 7vw, 46px); color: var(--accent); line-height: 0.95;">12.2×</div><div data-dc-tpl="72" style="font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; letter-spacing: 0.02em;">cheaper like for like. And 2.1× faster.</div></div>
+        <div data-dc-tpl="73" style="flex: 1 1 0%; min-width: 120px;"><div data-dc-tpl="74" style="font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 7vw, 46px); color: var(--ink); line-height: 0.95;">$9.10</div><div data-dc-tpl="75" style="font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-top: 8px; line-height: 1.45; letter-spacing: 0.02em;">for a swarm to fix a one-character typo.</div></div>
+      </div>
+      <details data-dc-tpl="76" style="border-bottom: 1px solid var(--rule);">
+        <summary data-dc-tpl="77" style="cursor: pointer; padding: 14px 0px; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+          <span data-dc-tpl="78">The full ledger — 10 tasks, $144.72</span>
+          <span data-dc-tpl="79" style="color: var(--accent);">open ↓</span>
+        </summary>
+        <div data-dc-tpl="80" style="padding: 0px 0px 20px;">
+          <div data-dc-tpl="81" style="overflow-x: auto; margin-bottom: 12px;">
+            <table data-dc-tpl="82" style="width: 100%; min-width: 440px; border-collapse: collapse; font-family: var(--mono); font-size: 12px;">
+              <thead data-dc-tpl="83"><tr data-dc-tpl="84" style="border-bottom: 1px solid var(--rule);">
+                <th data-dc-tpl="85" style="text-align: left; padding: 8px 8px 8px 0px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500;">Task</th>
+                <th data-dc-tpl="86" style="text-align: right; padding: 8px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500;">Swarm</th>
+                <th data-dc-tpl="87" style="text-align: right; padding: 8px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muted); font-weight: 500;">Mine</th>
+                <th data-dc-tpl="88" style="text-align: right; padding: 8px 0px 8px 8px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); font-weight: 600;">Ratio</th>
+              </tr></thead>
+              <tbody data-dc-tpl="89">
+                <tr data-dc-tpl="90" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="91" style="padding: 8px 8px 8px 0px; color: var(--body);">Fix a flash typo</td><td data-dc-tpl="92" style="padding: 8px; text-align: right; color: var(--muted);">$9.10</td><td data-dc-tpl="93" style="padding: 8px; text-align: right; color: var(--body);">$0.36</td><td data-dc-tpl="94" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">25.6×</td></tr>
+                <tr data-dc-tpl="95" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="96" style="padding: 8px 8px 8px 0px; color: var(--body);">Missing translation</td><td data-dc-tpl="97" style="padding: 8px; text-align: right; color: var(--muted);">$11.90</td><td data-dc-tpl="98" style="padding: 8px; text-align: right; color: var(--body);">$0.35</td><td data-dc-tpl="99" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">33.6×</td></tr>
+                <tr data-dc-tpl="100" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="101" style="padding: 8px 8px 8px 0px; color: var(--body);">Unique slug + index</td><td data-dc-tpl="102" style="padding: 8px; text-align: right; color: var(--muted);">$13.19</td><td data-dc-tpl="103" style="padding: 8px; text-align: right; color: var(--body);">$0.70</td><td data-dc-tpl="104" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">18.9×</td></tr>
+                <tr data-dc-tpl="105" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="106" style="padding: 8px 8px 8px 0px; color: var(--body);">Post.recent scope</td><td data-dc-tpl="107" style="padding: 8px; text-align: right; color: var(--muted);">$10.01</td><td data-dc-tpl="108" style="padding: 8px; text-align: right; color: var(--body);">$0.61</td><td data-dc-tpl="109" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">16.5×</td></tr>
+                <tr data-dc-tpl="110" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="111" style="padding: 8px 8px 8px 0px; color: var(--body);">Extract a service</td><td data-dc-tpl="112" style="padding: 8px; text-align: right; color: var(--muted);">$19.78</td><td data-dc-tpl="113" style="padding: 8px; text-align: right; color: var(--body);">$1.68</td><td data-dc-tpl="114" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">11.8×</td></tr>
+                <tr data-dc-tpl="115" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="116" style="padding: 8px 8px 8px 0px; color: var(--body);">User email specs</td><td data-dc-tpl="117" style="padding: 8px; text-align: right; color: var(--muted);">$6.71</td><td data-dc-tpl="118" style="padding: 8px; text-align: right; color: var(--body);">$0.48</td><td data-dc-tpl="119" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">14.1×</td></tr>
+                <tr data-dc-tpl="120" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="121" style="padding: 8px 8px 8px 0px; color: var(--body);">Comment resource</td><td data-dc-tpl="122" style="padding: 8px; text-align: right; color: var(--muted);">$21.93</td><td data-dc-tpl="123" style="padding: 8px; text-align: right; color: var(--body);">$1.52</td><td data-dc-tpl="124" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">14.4×</td></tr>
+                <tr data-dc-tpl="125" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="126" style="padding: 8px 8px 8px 0px; color: var(--body);">Publish notification job</td><td data-dc-tpl="127" style="padding: 8px; text-align: right; color: var(--muted);">$12.95</td><td data-dc-tpl="128" style="padding: 8px; text-align: right; color: var(--body);">$1.83</td><td data-dc-tpl="129" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">7.1×</td></tr>
+                <tr data-dc-tpl="130" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="131" style="padding: 8px 8px 8px 0px; color: var(--body);">Admin API + auth + rate limit</td><td data-dc-tpl="132" style="padding: 8px; text-align: right; color: var(--muted);">$18.17</td><td data-dc-tpl="133" style="padding: 8px; text-align: right; color: var(--body);">$2.65</td><td data-dc-tpl="134" style="padding: 8px 0px 8px 8px; text-align: right; font-weight: 600; color: var(--accent);">6.9×</td></tr>
+                <tr data-dc-tpl="135" style="border-bottom: 1px solid var(--hair);"><td data-dc-tpl="136" style="padding: 8px 8px 8px 0px; color: var(--warn);">Async report refactor</td><td data-dc-tpl="137" style="padding: 8px; text-align: right; color: var(--warn);">$4.55 ✗</td><td data-dc-tpl="138" style="padding: 8px; text-align: right; color: var(--body);">$6.25</td><td data-dc-tpl="139" style="padding: 8px 0px 8px 8px; text-align: right; color: var(--warn); font-size: 10px;">no code</td></tr>
+                <tr data-dc-tpl="140"><td data-dc-tpl="141" style="padding: 10px 8px 10px 0px; color: var(--ink); font-weight: 600;">Totals (9 completed)</td><td data-dc-tpl="142" style="padding: 10px 8px; text-align: right; font-weight: 600; color: var(--ink);">$123.74</td><td data-dc-tpl="143" style="padding: 10px 8px; text-align: right; font-weight: 600; color: var(--accent);">$10.18</td><td data-dc-tpl="144" style="padding: 10px 0px 10px 8px; text-align: right; font-weight: 600; color: var(--accent);">12.2×</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p data-dc-tpl="145" style="font-family: var(--serif); font-size: 13.5px; line-height: 1.6; color: var(--muted); margin: 0px;">The last row failed on both sides — the swarm burned its whole budget writing a spec and shipped no code, yet the harness still reported <code data-dc-tpl="146" style="font-family: var(--mono); font-size: 11px; color: var(--warn);">tests_pass: true</code>. A green check can be a lie. <a data-dc-tpl="147" href="https://github.com/kurenn/roundhouse/blob/main/BENCHMARK.md">Raw data + harness →</a></p>
+        </div>
+      </details>
+    </section>
+
+    
+    <section data-dc-tpl="148" style="padding: 8px 0px 36px;">
+      <div data-dc-tpl="149" style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px;"><span data-dc-tpl="150" style="font-family: var(--serif); font-size: 30px; font-weight: 500; color: var(--accent); line-height: 1;">03</span><span data-dc-tpl="151" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);">What I shipped</span><span data-dc-tpl="152" style="flex: 1 1 0%; height: 1px; background: var(--rule);"></span></div>
+      <h2 data-dc-tpl="153" style="font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 4.4vw, 32px); line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); margin: 0px 0px 16px;">Six tools, all public</h2>
+      <div data-dc-tpl="154" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 4px 36px;">
+        <div data-dc-tpl="155" style="padding: 12px 0px; border-top: 1px solid var(--hair);"><a data-dc-tpl="156" href="https://github.com/kurenn/roundhouse" style="font-family: var(--mono); font-size: 13.5px; font-weight: 600; color: var(--ink);">roundhouse</a><div data-dc-tpl="157" style="font-family: var(--serif); font-size: 14.5px; line-height: 1.5; color: var(--body); margin-top: 3px;">Rails specialist team, triage-first. <span data-dc-tpl="158" style="color: var(--accent);">7–34× cheaper.</span></div></div>
+        <div data-dc-tpl="159" style="padding: 12px 0px; border-top: 1px solid var(--hair);"><a data-dc-tpl="160" href="https://github.com/kurenn/rails-audit" style="font-family: var(--mono); font-size: 13.5px; font-weight: 600; color: var(--ink);">rails-audit</a><div data-dc-tpl="161" style="font-family: var(--serif); font-size: 14.5px; line-height: 1.5; color: var(--body); margin-top: 3px;">18-dimension read-only stability audit.</div></div>
+        <div data-dc-tpl="162" style="padding: 12px 0px; border-top: 1px solid var(--hair);"><a data-dc-tpl="163" href="https://github.com/kurenn/boorails" style="font-family: var(--mono); font-size: 13.5px; font-weight: 600; color: var(--ink);">boorails</a><div data-dc-tpl="164" style="font-family: var(--serif); font-size: 14.5px; line-height: 1.5; color: var(--body); margin-top: 3px;">7 lifecycle skills that run, not narrate.</div></div>
+        <div data-dc-tpl="165" style="padding: 12px 0px; border-top: 1px solid var(--hair);"><a data-dc-tpl="166" href="https://github.com/kurenn/dev-loop" style="font-family: var(--mono); font-size: 13.5px; font-weight: 600; color: var(--ink);">dev-loop</a><div data-dc-tpl="167" style="font-family: var(--serif); font-size: 14.5px; line-height: 1.5; color: var(--body); margin-top: 3px;">6-phase plan → build → adversarial review.</div></div>
+        <div data-dc-tpl="168" style="padding: 12px 0px; border-top: 1px solid var(--hair);"><a data-dc-tpl="169" href="https://github.com/kurenn/prompt-refiner-skill" style="font-family: var(--mono); font-size: 13.5px; font-weight: 600; color: var(--ink);">prompt-refiner</a><div data-dc-tpl="170" style="font-family: var(--serif); font-size: 14.5px; line-height: 1.5; color: var(--body); margin-top: 3px;">Turns loose intent into an executable spec.</div></div>
+        <div data-dc-tpl="171" style="padding: 12px 0px; border-top: 1px solid var(--hair);"><a data-dc-tpl="172" href="https://github.com/kurenn/claude-prototype" style="font-family: var(--mono); font-size: 13.5px; font-weight: 600; color: var(--ink);">claude-prototype</a><div data-dc-tpl="173" style="font-family: var(--serif); font-size: 14.5px; line-height: 1.5; color: var(--body); margin-top: 3px;">Clickable production-feel demos, zero build.</div></div>
+      </div>
+      <div data-dc-tpl="174" style="font-family: var(--mono); font-size: 12px; color: var(--body); margin-top: 16px; padding: 11px 14px; background: var(--panel); overflow-x: auto;"><span data-dc-tpl="175" style="color: var(--muted);">$ </span>claude plugin marketplace add kurenn/marketplace</div>
+    </section>
+
+    
+    <section data-dc-tpl="176" style="padding: 8px 0px 36px;">
+      <div data-dc-tpl="177" style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px;"><span data-dc-tpl="178" style="font-family: var(--serif); font-size: 30px; font-weight: 500; color: var(--accent); line-height: 1;">04</span><span data-dc-tpl="179" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);">Where I was wrong</span><span data-dc-tpl="180" style="flex: 1 1 0%; height: 1px; background: var(--rule);"></span></div>
+      <h2 data-dc-tpl="181" style="font-family: var(--serif); font-weight: 500; font-size: clamp(24px, 4.4vw, 32px); line-height: 1.1; letter-spacing: -0.01em; color: var(--ink); margin: 0px 0px 16px;">Four that didn't work</h2>
+      <div data-dc-tpl="182" style="display: flex; flex-direction: column;">
+        <div data-dc-tpl="183" style="display: flex; gap: 18px; padding: 14px 0px; border-top: 1px solid var(--hair);"><div data-dc-tpl="184" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">01</div><div data-dc-tpl="185" style="flex: 1 1 0%; font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--body);">Shipped three Claude Code hooks that never ran, for two releases. <em data-dc-tpl="186" style="font-style: italic; color: var(--ink);">A silent no-op is indistinguishable from success at a glance.</em></div></div>
+        <div data-dc-tpl="187" style="display: flex; gap: 18px; padding: 14px 0px; border-top: 1px solid var(--hair);"><div data-dc-tpl="188" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">02</div><div data-dc-tpl="189" style="flex: 1 1 0%; font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--body);">My benchmark lied to me — headless Chrome's 500px floor faked the mobile clipping. I published the correction on top of my own results.</div></div>
+        <div data-dc-tpl="190" style="display: flex; gap: 18px; padding: 14px 0px; border-top: 1px solid var(--hair);"><div data-dc-tpl="191" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">03</div><div data-dc-tpl="192" style="flex: 1 1 0%; font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--body);">My liveness probe kill-looped nine healthy agents. <em data-dc-tpl="193" style="font-style: italic; color: var(--ink);">The monitoring was the incident.</em></div></div>
+        <div data-dc-tpl="194" style="display: flex; gap: 18px; padding: 14px 0px; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair);"><div data-dc-tpl="195" style="font-family: var(--mono); font-size: 12px; color: var(--muted); flex-shrink: 0; width: 26px;">04</div><div data-dc-tpl="196" style="flex: 1 1 0%; font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--body);">"Calibration on N=2 isn't calibration" — so I wrote my own coverage gaps into the README before anyone else could.</div></div>
+      </div>
+    </section>
+
+    
+    <section data-dc-tpl="197" style="padding: 8px 0px 36px;">
+      <div data-dc-tpl="198" style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px;"><span data-dc-tpl="199" style="font-family: var(--serif); font-size: 30px; font-weight: 500; color: var(--accent); line-height: 1;">05</span><span data-dc-tpl="200" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);">The record</span><span data-dc-tpl="201" style="flex: 1 1 0%; height: 1px; background: var(--rule);"></span></div>
+      <p data-dc-tpl="202" style="font-family: var(--serif); font-size: 16px; line-height: 1.7; color: var(--body); margin: 0px; max-width: 34em;">First Rails app in 2010. Wrote <em data-dc-tpl="203" style="font-style: italic; color: var(--ink);">APIs on Rails</em> in 2014. Today I'm CTO and co-founder of <span data-dc-tpl="204" style="color: var(--ink);">Coba</span> (YC S23), a board member at <span data-dc-tpl="205" style="color: var(--ink);">Icalia Labs</span>, and a contributor to <span data-dc-tpl="206" style="color: var(--ink);">Codeando México</span>. Seventy public repos, 376 stars, roughly ten commits a day. The findings aren't Rails findings — <em data-dc-tpl="207" style="font-style: italic; color: var(--accent);">"69% of your bill is coordination" isn't a fact about Ruby.</em> It just happens to be measurable in the stack I know cold.</p>
+    </section>
+
+    
+    <section data-dc-tpl="208" style="padding: 8px 0px 36px;">
+      <div data-dc-tpl="209" style="display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px;"><span data-dc-tpl="210" style="font-family: var(--serif); font-size: 30px; font-weight: 500; color: var(--accent); line-height: 1;">06</span><span data-dc-tpl="211" style="font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);">Work with me</span><span data-dc-tpl="212" style="flex: 1 1 0%; height: 1px; background: var(--rule);"></span></div>
+      <h2 data-dc-tpl="213" style="font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 4.8vw, 38px); line-height: 1.05; letter-spacing: -0.015em; color: var(--ink); margin: 0px 0px 14px; text-wrap: balance; max-width: 13em;">Want this pointed at your codebase?</h2>
+      <p data-dc-tpl="214" style="font-family: var(--serif); font-size: 16px; line-height: 1.65; color: var(--body); margin: 0px 0px 24px; max-width: 32em;">I take one sprint client a month — one week, one working AI application. Tell me what you're building and I'll reply within a day.</p>
+      
+        <form action="https://api.web3forms.com/submit" method="POST" data-dc-tpl="216" style="max-width: 34em;"><input type="hidden" name="access_key" value="874fac90-3218-4297-aa17-0217b093d67a"><input type="hidden" name="subject" value="Sprint enquiry — kurenn.dev/work"><input type="hidden" name="from_name" value="kurenn.dev"><input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+          <label data-dc-tpl="217" style="display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">Email address</label>
+          <div data-dc-tpl="218" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
+            <input data-dc-tpl="219" name="email" type="email" placeholder="you@company.com" class="scp0" style="flex: 1 1 0%; min-width: 220px; font-family: var(--mono); font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); padding: 12px 14px; outline: none;" required>
+            <button data-dc-tpl="220" type="submit" style="font-family: var(--mono); font-size: 12.5px; font-weight: 500; color: var(--bg); background: var(--accent); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; padding: 12px 20px; cursor: pointer; white-space: nowrap;">Book a sprint slot →</button>
+          </div>
+          <label data-dc-tpl="221" style="display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">What you're building <span data-dc-tpl="222" style="text-transform: none; letter-spacing: 0px;">(optional)</span></label>
+          <textarea data-dc-tpl="223" name="note" rows="3" placeholder="A sentence or two on the app and the stack." class="scp0" style="width: 100%; font-family: var(--serif); font-size: 15px; line-height: 1.6; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); padding: 12px 14px; outline: none; resize: vertical;"></textarea>
+          <p data-dc-tpl="224" style="font-family: var(--serif); font-size: 13px; line-height: 1.6; color: var(--muted); margin: 12px 0px 0px;">No spam, no list. This goes straight to my inbox. Prefer to look first? <a data-dc-tpl="225" href="https://github.com/kurenn">Read the code →</a></p>
+        </form>
+      
+      
+    </section>
+
+    <div data-dc-tpl="232" style="height: 2px; background: var(--ink);"></div>
+    <footer data-dc-tpl="233" style="padding: 16px 0px 44px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;">
+      <span data-dc-tpl="234" style="color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em;">Built in Mexico City</span>
+      <div data-dc-tpl="235" style="display: flex; gap: 18px;">
+        <a data-dc-tpl="236" href="https://github.com/kurenn">GitHub ↗</a>
+        <a data-dc-tpl="237" href="https://x.com/kurenn">X ↗</a>
+        <a data-dc-tpl="238" href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/">LinkedIn ↗</a>
+      </div>
+    </footer>
+
+  </main></div></div></div>
+
+
+
+
+<script>
+document.querySelector('form[action*="web3forms"]').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  var form = e.target, btn = form.querySelector('button[type=submit]');
+  var label = btn.textContent;
+  btn.textContent = 'Sending…'; btn.disabled = true;
+  try {
+    var r = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+    var j = await r.json();
+    if (!j.success) throw new Error(j.message || 'failed');
+    form.innerHTML =
+      '<p style="font-family:var(--mono);font-size:13px;line-height:1.7;color:#C0392B">' +
+      'Got it. I read every one of these myself and I\'ll reply within a day.</p>';
+  } catch (err) {
+    btn.textContent = label; btn.disabled = false;
+    var m = form.querySelector('.err') || Object.assign(document.createElement('p'), {className: 'err'});
+    m.style.cssText = 'font-family:var(--mono);font-size:12px;color:#C0392B;margin-top:.75em';
+    m.textContent = "That didn't send. Email me directly: abkuri88@gmail.com";
+    form.appendChild(m);
+  }
+});
+</script>
+</body>
+</html>
