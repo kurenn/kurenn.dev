@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>50 Things You Could Be Automating With Your AI Agent — Abraham Kuri</title>
+<!--
+  PRINT SOURCE for /guide/50-things-you-could-be-automating.pdf
+
+  Regenerate:
+      python3 _internal/guide/render.py
+
+  Fonts resolve relative to this file (../../fonts/). Keep it here, not at the
+  repo root — the root is the site, and this is a machine.
+-->
+<style>
+FONT_FACES
+
+:root{
+  --bg:#FBF8F1; --ink:#17140E; --body:#413B30; --muted:#8B8474;
+  --accent:#CE3A22; --rule:#E0D9CA; --hair:#E8E2D5; --panel:#F3EEE3;
+  --serif:'Newsreader',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+
+/* Zero page margin, and put the margin in the page's own padding instead —
+   otherwise Chrome paints the background only inside the content box and every
+   sheet comes out cream with white gutters. The site is cream to the edge; so
+   is this. */
+@page { size: A4; margin: 0; }
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html, body{ background:var(--bg); }
+body{
+  font-family:var(--serif); color:var(--body);
+  font-size:10.5pt; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+
+/* ---- page machinery ---------------------------------------------------- */
+.page{
+  padding:16mm 15mm 14mm; min-height:297mm;
+  page-break-after:always; background:var(--bg);
+}
+.page:last-child{ page-break-after:auto; }
+.keep{ page-break-inside:avoid; break-inside:avoid; }
+
+/* ---- cover ------------------------------------------------------------- */
+.cover{ height:297mm; display:flex; flex-direction:column; }
+.eyebrow{
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--muted);
+}
+.cover .eyebrow{ color:var(--accent); }
+.cover-mid{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+h1{
+  font-family:var(--serif); font-weight:600; font-size:46pt; line-height:1.02;
+  letter-spacing:-.02em; color:var(--ink); margin:0 0 18px; max-width:12em;
+}
+.cover .lede{
+  font-size:14pt; line-height:1.5; color:var(--body); max-width:26em; margin-bottom:26px;
+}
+.cover .lede em{ font-style:italic; color:var(--ink); }
+.rule-heavy{ height:2px; background:var(--ink); }
+.rule{ height:1px; background:var(--rule); }
+.cover-foot{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.06em; color:var(--muted);
+  padding-top:12px; border-top:1px solid var(--ink);
+}
+.cover-foot strong{ color:var(--ink); font-weight:500; }
+
+/* ---- interior ---------------------------------------------------------- */
+h2{
+  font-family:var(--serif); font-weight:500; font-size:24pt; line-height:1.1;
+  letter-spacing:-.015em; color:var(--ink); margin:0 0 10px; max-width:16em;
+}
+h3{
+  font-family:var(--serif); font-weight:600; font-size:13pt; color:var(--ink);
+  margin:0 0 6px;
+}
+p{ margin:0 0 11px; max-width:34em; }
+p.lede{ font-size:12pt; line-height:1.6; }
+em{ font-style:italic; color:var(--ink); }
+strong{ font-weight:600; color:var(--ink); }
+a{ color:var(--accent); text-decoration:none; }
+
+.sec-head{
+  display:flex; align-items:baseline; gap:14px; margin:0 0 14px;
+}
+.sec-head .n{
+  font-family:var(--serif); font-size:22pt; font-weight:500; color:var(--accent); line-height:1;
+}
+.sec-head .t{
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--muted); white-space:nowrap;
+}
+.sec-head .fill{ flex:1; height:1px; background:var(--rule); }
+
+/* ---- the rules panel --------------------------------------------------- */
+.rulecard{
+  background:var(--panel); border-left:2px solid var(--accent);
+  padding:14px 16px; margin:0 0 14px;
+}
+.rulecard h3{ margin-bottom:4px; }
+.rulecard p{ margin:0; font-size:10pt; }
+
+/* ---- the 50 ------------------------------------------------------------ */
+.item{ display:flex; gap:14px; padding:11px 0; border-top:1px solid var(--hair); }
+.item .num{
+  font-family:var(--mono); font-size:9pt; color:var(--accent);
+  flex-shrink:0; width:22px; padding-top:2px;
+}
+.item .body{ flex:1; }
+.item .job{
+  font-family:var(--serif); font-size:12.5pt; font-weight:600; color:var(--ink);
+  line-height:1.3; margin-bottom:3px;
+}
+.item .does{ font-size:10pt; line-height:1.5; color:var(--body); margin-bottom:4px; }
+.item .receipt{
+  font-family:var(--mono); font-size:8.5pt; line-height:1.5; color:var(--muted);
+}
+.item .receipt b{
+  color:var(--accent); font-weight:400; letter-spacing:.08em; text-transform:uppercase;
+}
+.group{ margin-bottom:20px; }
+.group:last-child{ margin-bottom:0; }
+
+/* ---- closing ----------------------------------------------------------- */
+.pull{
+  font-family:var(--serif); font-size:15.5pt; line-height:1.35; color:var(--ink);
+  font-style:italic; max-width:22em; margin:0 0 12px;
+}
+.links{ margin-top:12px; }
+.links .row{
+  display:flex; gap:14px; padding:7px 0; border-top:1px solid var(--hair);
+  font-size:9.5pt; align-items:baseline;
+}
+.links .row .k{
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); width:88px; flex-shrink:0;
+}
+.links .row .v{ flex:1; }
+.links .row .v a{ color:var(--accent); }
+
+.folio{
+  position:running(footer);
+}
+.sig{
+  margin-top:14px; padding-top:9px; border-top:2px solid var(--ink);
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.06em; color:var(--muted);
+  display:flex; justify-content:space-between;
+}
+/* The closing page must END the document. Left to itself the signature block
+   orphans onto a 13th page that is nothing but a rule and a footer. */
+.page.close{ min-height:auto; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="page cover">
+  <div class="eyebrow">[ Free guide ]</div>
+
+  <div class="cover-mid">
+    <h1>50 Things You Could Be Automating With Your AI&nbsp;Agent</h1>
+    <p class="lede">
+      The playbook for turning invisible manual work into agent-run systems:
+      sales, marketing, support, ops, engineering — and you.
+      <em>Every one of them comes with a receipt.</em>
+    </p>
+    <div class="rule-heavy" style="max-width:120px"></div>
+  </div>
+
+  <div class="cover-foot">
+    <span><strong>Abraham Kuri</strong> — CTO &amp; co-founder, Coba (YC&nbsp;S23)</span>
+    <span>kurenn.dev</span>
+  </div>
+</section>
+
+<!-- ============================ READ FIRST ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">00</span><span class="t">Read this first</span><span class="fill"></span>
+  </div>
+
+  <h2>An automation you can't check isn't an automation. It's a rumour.</h2>
+
+  <p class="lede">
+    I have spent the last year building teams of AI agents and measuring what they
+    actually cost. The most expensive lesson had nothing to do with money.
+  </p>
+
+  <p>
+    I once shipped a health check for a fleet of agents. It watched them, and it told
+    me they were alive. It said so four separate times. They were dead. The check was
+    matching against its own process — it was finding <em>itself</em> and reporting a
+    heartbeat. My monitoring didn't miss the incident. My monitoring <strong>was</strong>
+    the incident.
+  </p>
+
+  <p>
+    That is the whole risk of automating your company. Not that the robot does the
+    wrong thing loudly — you'd catch that by Tuesday. It's that it does
+    <em>nothing</em>, quietly, and everything looks fine. A queue that is wrong looks
+    exactly like a queue that is fine.
+  </p>
+
+  <p>
+    So this isn't a list of prompts. It's a list of <strong>jobs</strong> — and every
+    single one of them ships with a <em>receipt</em>: the thing you look at to know it
+    really ran. If you take nothing else from this guide, take the receipts.
+  </p>
+
+  <div class="rulecard keep">
+    <h3>Rule 1 — Start where it's boring, repetitive, and checkable.</h3>
+    <p>Not where it's hardest. Not where it's most impressive in a demo. The first
+       automation should be something you already do by hand every week and could
+       verify in ten seconds. Boring work is where agents are superhuman and where a
+       mistake costs you nothing.</p>
+  </div>
+
+  <div class="rulecard keep">
+    <h3>Rule 2 — If you can't name the receipt, don't build it.</h3>
+    <p>Before you automate anything, finish this sentence: <em>"I'll know it worked
+       because I'll see ____."</em> A message in a channel. A row in a sheet. A link
+       to the thing it made. If you can't finish that sentence, you're not building an
+       automation — you're building a place for work to disappear.</p>
+  </div>
+
+  <div class="rulecard keep">
+    <h3>Rule 3 — Silence must be loud.</h3>
+    <p>The default state of a broken automation is silence, and silence feels like
+       peace. Make the absence of work an event: <em>"0 invoices chased"</em> on a day
+       with overdue invoices should page you as hard as an error would. Every serious
+       failure I've had was something that quietly did nothing and looked fine.</p>
+  </div>
+
+  <p style="margin-top:16px">
+    Pick <strong>three</strong> from the next pages. Not thirty. Three you already do
+    by hand, that you'd notice within a day if they stopped. Run them for two weeks.
+    Then come back.
+  </p>
+</section>
+
+<!-- ============================ SALES ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">01</span><span class="t">Sales &amp; pipeline</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The work that happens <em>around</em> selling is the work that
+     doesn't get done. None of this replaces the call. All of it replaces the hour after it.</p>
+
+  <div class="group">
+ITEMS_SALES
+  </div>
+</section>
+
+<!-- ============================ MARKETING ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">02</span><span class="t">Marketing &amp; content</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The trap here is asking an agent to have opinions. Don't.
+     Ask it to <em>carry</em> yours — into more places, more often, from things you already made.</p>
+
+  <div class="group">
+ITEMS_MARKETING
+  </div>
+</section>
+
+<!-- ============================ SUPPORT ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">03</span><span class="t">Support &amp; customers</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">Keep a human on the send button for anything a customer reads.
+     Automate everything that happens <em>before</em> that button.</p>
+
+  <div class="group">
+ITEMS_SUPPORT
+  </div>
+</section>
+
+<!-- ============================ OPS ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">04</span><span class="t">Operations &amp; money</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">One hard rule, and I mean it: <strong>an agent may draft a
+     money decision, never make one.</strong> Everything below stops one step short of the
+     transaction, on purpose.</p>
+
+  <div class="group">
+ITEMS_OPS
+  </div>
+</section>
+
+<!-- ============================ ENGINEERING ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">05</span><span class="t">Engineering</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">Even if you don't write code, read this one. It's where your
+     team is quietly losing days — and where the receipts are easiest to see.</p>
+
+  <div class="group">
+ITEMS_ENG
+  </div>
+</section>
+
+<!-- ============================ HIRING ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">06</span><span class="t">Hiring &amp; people</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The line here is sharp: an agent may <em>prepare</em> a
+     judgement about a person. It may never <em>make</em> one. Prepare, then you decide.</p>
+
+  <div class="group">
+ITEMS_HIRING
+  </div>
+</section>
+
+<!-- ============================ YOU ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">07</span><span class="t">You</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The last five are the ones founders skip and then wish they
+     hadn't. Your attention is the scarcest thing in the company. Defend it like a budget.</p>
+
+  <div class="group">
+ITEMS_YOU
+  </div>
+</section>
+
+<!-- ============================ CLOSING ============================ -->
+<section class="page close">
+  <div class="sec-head">
+    <span class="n">08</span><span class="t">What to do on Monday</span><span class="fill"></span>
+  </div>
+
+  <h2>Where this goes wrong, and how you'll know.</h2>
+
+  <p class="pull">
+    "The first thing that breaks won't be the agent. It'll be your ability to tell
+    whether the agent did anything at all."
+  </p>
+
+  <p>
+    Here's the failure I want you to expect, because it's the one I keep having. You
+    wire something up. It works. You stop watching it. Three weeks later you find out
+    it stopped working on day four — and nothing anywhere told you, because
+    <em>nothing</em> is exactly what a broken automation produces.
+  </p>
+
+  <p>
+    Every serious failure in my own systems has had that same shape. A monitor that
+    matched itself and reported health. A publish button that reported success and
+    posted nothing. A guard against double-posting that never ran, so it looked like it
+    worked. All of them were <strong>instruments that couldn't tell success from
+    nothing</strong>.
+  </p>
+
+  <p>
+    Which is why the fix is boringly mechanical, and why I'll keep repeating it:
+    <strong>test the refusals first.</strong> Before you trust an automation, break it
+    on purpose. Unplug it and confirm something screams. If nothing screams, you don't
+    have an automation — you have a rumour that one exists.
+  </p>
+
+  <div class="rule" style="margin:18px 0 16px"></div>
+
+  <h3 style="margin-bottom:8px">Your first two weeks</h3>
+  <p><strong>Week 1.</strong> Pick three from this list. Boring, repetitive, checkable.
+     Write down the receipt for each one <em>before</em> you build it. Build the smallest
+     version that produces that receipt.</p>
+  <p><strong>Week 2.</strong> Break each one on purpose. Did you find out? If not, fix the
+     receipt — not the agent. Then, and only then, add the fourth.</p>
+  <p style="margin-bottom:0">That's it. That's the whole method. It is not sophisticated and
+     it is the reason my systems are still standing.</p>
+
+  <div class="links">
+    <div class="row">
+      <span class="k">The receipts</span>
+      <span class="v"><a href="https://github.com/kurenn/field-notes">github.com/kurenn/field-notes</a>
+        — every time one of my systems lied to me, written up in public, including the
+        ones that made me look bad.</span>
+    </div>
+    <div class="row">
+      <span class="k">The numbers</span>
+      <span class="v"><a href="https://kurenn.dev">kurenn.dev</a>
+        — two multi-agent architectures, ten real tasks, $144.72 on the meter, and the
+        finding that 69% of the bill was agents talking to each other.</span>
+    </div>
+    <div class="row">
+      <span class="k">The tools</span>
+      <span class="v"><a href="https://github.com/kurenn">github.com/kurenn</a>
+        — the agent teams, the audit tools and the prototyping kit I use for all of this.
+        Open source, free.</span>
+    </div>
+    <div class="row">
+      <span class="k">Say hello</span>
+      <span class="v"><a href="https://x.com/kurenn">x.com/kurenn</a> ·
+        <a href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/">LinkedIn</a>
+        — tell me which three you picked. I read every one, and I'll tell you if I think
+        you picked wrong.</span>
+    </div>
+  </div>
+
+  <div class="sig">
+    <span>Abraham Kuri — Mexico City</span>
+    <span>kurenn.dev</span>
+  </div>
+</section>
+
+</body>
+</html>

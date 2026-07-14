@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+# The guide is the lead magnet. If Google indexes the PDF, people land on it
+# straight from search and the email capture — the entire point of it — never
+# happens. Not in the sitemap either. Reachable only from the form on /.
+Disallow: /guide/
+
 Sitemap: https://kurenn.dev/sitemap.xml

@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>50 Things You Could Be Automating With Your AI Agent — Abraham Kuri</title>
+<!--
+  PRINT SOURCE for /guide/50-things-you-could-be-automating.pdf
+
+  Regenerate:
+      python3 _internal/guide/render.py
+
+  Fonts resolve relative to this file (../../fonts/). Keep it here, not at the
+  repo root — the root is the site, and this is a machine.
+-->
+<style>
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/442b3ec987.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/f3e3ef5f4a.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/f299d916ba.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/108d509084.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/2c9bacf024.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/f49291b791.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/695a267637.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/062794e1a3.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/24397a3e83.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/3a2668b94b.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/c314a25c3a.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/1b68792e8d.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/7925a2dd6c.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/535a3114a7.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/c11adc9130.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/f345600864.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/3184335df9.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/0e959a3459.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/f345600864.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/3184335df9.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/0e959a3459.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/b232cde57b.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/5ca53eda01.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../fonts/662a6e2a1a.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/b232cde57b.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/5ca53eda01.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../fonts/662a6e2a1a.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/b232cde57b.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/5ca53eda01.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../fonts/662a6e2a1a.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root{
+  --bg:#FBF8F1; --ink:#17140E; --body:#413B30; --muted:#8B8474;
+  --accent:#CE3A22; --rule:#E0D9CA; --hair:#E8E2D5; --panel:#F3EEE3;
+  --serif:'Newsreader',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+
+/* Zero page margin, and put the margin in the page's own padding instead —
+   otherwise Chrome paints the background only inside the content box and every
+   sheet comes out cream with white gutters. The site is cream to the edge; so
+   is this. */
+@page { size: A4; margin: 0; }
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+html, body{ background:var(--bg); }
+body{
+  font-family:var(--serif); color:var(--body);
+  font-size:10.5pt; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+
+/* ---- page machinery ---------------------------------------------------- */
+.page{
+  padding:16mm 15mm 14mm; min-height:297mm;
+  page-break-after:always; background:var(--bg);
+}
+.page:last-child{ page-break-after:auto; }
+.keep{ page-break-inside:avoid; break-inside:avoid; }
+
+/* ---- cover ------------------------------------------------------------- */
+.cover{ height:297mm; display:flex; flex-direction:column; }
+.eyebrow{
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--muted);
+}
+.cover .eyebrow{ color:var(--accent); }
+.cover-mid{ flex:1; display:flex; flex-direction:column; justify-content:center; }
+h1{
+  font-family:var(--serif); font-weight:600; font-size:46pt; line-height:1.02;
+  letter-spacing:-.02em; color:var(--ink); margin:0 0 18px; max-width:12em;
+}
+.cover .lede{
+  font-size:14pt; line-height:1.5; color:var(--body); max-width:26em; margin-bottom:26px;
+}
+.cover .lede em{ font-style:italic; color:var(--ink); }
+.rule-heavy{ height:2px; background:var(--ink); }
+.rule{ height:1px; background:var(--rule); }
+.cover-foot{
+  display:flex; justify-content:space-between; align-items:baseline;
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.06em; color:var(--muted);
+  padding-top:12px; border-top:1px solid var(--ink);
+}
+.cover-foot strong{ color:var(--ink); font-weight:500; }
+
+/* ---- interior ---------------------------------------------------------- */
+h2{
+  font-family:var(--serif); font-weight:500; font-size:24pt; line-height:1.1;
+  letter-spacing:-.015em; color:var(--ink); margin:0 0 10px; max-width:16em;
+}
+h3{
+  font-family:var(--serif); font-weight:600; font-size:13pt; color:var(--ink);
+  margin:0 0 6px;
+}
+p{ margin:0 0 11px; max-width:34em; }
+p.lede{ font-size:12pt; line-height:1.6; }
+em{ font-style:italic; color:var(--ink); }
+strong{ font-weight:600; color:var(--ink); }
+a{ color:var(--accent); text-decoration:none; }
+
+.sec-head{
+  display:flex; align-items:baseline; gap:14px; margin:0 0 14px;
+}
+.sec-head .n{
+  font-family:var(--serif); font-size:22pt; font-weight:500; color:var(--accent); line-height:1;
+}
+.sec-head .t{
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--muted); white-space:nowrap;
+}
+.sec-head .fill{ flex:1; height:1px; background:var(--rule); }
+
+/* ---- the rules panel --------------------------------------------------- */
+.rulecard{
+  background:var(--panel); border-left:2px solid var(--accent);
+  padding:14px 16px; margin:0 0 14px;
+}
+.rulecard h3{ margin-bottom:4px; }
+.rulecard p{ margin:0; font-size:10pt; }
+
+/* ---- the 50 ------------------------------------------------------------ */
+.item{ display:flex; gap:14px; padding:11px 0; border-top:1px solid var(--hair); }
+.item .num{
+  font-family:var(--mono); font-size:9pt; color:var(--accent);
+  flex-shrink:0; width:22px; padding-top:2px;
+}
+.item .body{ flex:1; }
+.item .job{
+  font-family:var(--serif); font-size:12.5pt; font-weight:600; color:var(--ink);
+  line-height:1.3; margin-bottom:3px;
+}
+.item .does{ font-size:10pt; line-height:1.5; color:var(--body); margin-bottom:4px; }
+.item .receipt{
+  font-family:var(--mono); font-size:8.5pt; line-height:1.5; color:var(--muted);
+}
+.item .receipt b{
+  color:var(--accent); font-weight:400; letter-spacing:.08em; text-transform:uppercase;
+}
+.group{ margin-bottom:20px; }
+.group:last-child{ margin-bottom:0; }
+
+/* ---- closing ----------------------------------------------------------- */
+.pull{
+  font-family:var(--serif); font-size:15.5pt; line-height:1.35; color:var(--ink);
+  font-style:italic; max-width:22em; margin:0 0 12px;
+}
+.links{ margin-top:12px; }
+.links .row{
+  display:flex; gap:14px; padding:7px 0; border-top:1px solid var(--hair);
+  font-size:9.5pt; align-items:baseline;
+}
+.links .row .k{
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); width:88px; flex-shrink:0;
+}
+.links .row .v{ flex:1; }
+.links .row .v a{ color:var(--accent); }
+
+.folio{
+  position:running(footer);
+}
+.sig{
+  margin-top:14px; padding-top:9px; border-top:2px solid var(--ink);
+  font-family:var(--mono); font-size:8.5pt; letter-spacing:.06em; color:var(--muted);
+  display:flex; justify-content:space-between;
+}
+/* The closing page must END the document. Left to itself the signature block
+   orphans onto a 13th page that is nothing but a rule and a footer. */
+.page.close{ min-height:auto; }
+</style>
+</head>
+<body>
+
+<!-- ============================ COVER ============================ -->
+<section class="page cover">
+  <div class="eyebrow">[ Free guide ]</div>
+
+  <div class="cover-mid">
+    <h1>50 Things You Could Be Automating With Your AI&nbsp;Agent</h1>
+    <p class="lede">
+      The playbook for turning invisible manual work into agent-run systems:
+      sales, marketing, support, ops, engineering — and you.
+      <em>Every one of them comes with a receipt.</em>
+    </p>
+    <div class="rule-heavy" style="max-width:120px"></div>
+  </div>
+
+  <div class="cover-foot">
+    <span><strong>Abraham Kuri</strong> — CTO &amp; co-founder, Coba (YC&nbsp;S23)</span>
+    <span>kurenn.dev</span>
+  </div>
+</section>
+
+<!-- ============================ READ FIRST ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">00</span><span class="t">Read this first</span><span class="fill"></span>
+  </div>
+
+  <h2>An automation you can't check isn't an automation. It's a rumour.</h2>
+
+  <p class="lede">
+    I have spent the last year building teams of AI agents and measuring what they
+    actually cost. The most expensive lesson had nothing to do with money.
+  </p>
+
+  <p>
+    I once shipped a health check for a fleet of agents. It watched them, and it told
+    me they were alive. It said so four separate times. They were dead. The check was
+    matching against its own process — it was finding <em>itself</em> and reporting a
+    heartbeat. My monitoring didn't miss the incident. My monitoring <strong>was</strong>
+    the incident.
+  </p>
+
+  <p>
+    That is the whole risk of automating your company. Not that the robot does the
+    wrong thing loudly — you'd catch that by Tuesday. It's that it does
+    <em>nothing</em>, quietly, and everything looks fine. A queue that is wrong looks
+    exactly like a queue that is fine.
+  </p>
+
+  <p>
+    So this isn't a list of prompts. It's a list of <strong>jobs</strong> — and every
+    single one of them ships with a <em>receipt</em>: the thing you look at to know it
+    really ran. If you take nothing else from this guide, take the receipts.
+  </p>
+
+  <div class="rulecard keep">
+    <h3>Rule 1 — Start where it's boring, repetitive, and checkable.</h3>
+    <p>Not where it's hardest. Not where it's most impressive in a demo. The first
+       automation should be something you already do by hand every week and could
+       verify in ten seconds. Boring work is where agents are superhuman and where a
+       mistake costs you nothing.</p>
+  </div>
+
+  <div class="rulecard keep">
+    <h3>Rule 2 — If you can't name the receipt, don't build it.</h3>
+    <p>Before you automate anything, finish this sentence: <em>"I'll know it worked
+       because I'll see ____."</em> A message in a channel. A row in a sheet. A link
+       to the thing it made. If you can't finish that sentence, you're not building an
+       automation — you're building a place for work to disappear.</p>
+  </div>
+
+  <div class="rulecard keep">
+    <h3>Rule 3 — Silence must be loud.</h3>
+    <p>The default state of a broken automation is silence, and silence feels like
+       peace. Make the absence of work an event: <em>"0 invoices chased"</em> on a day
+       with overdue invoices should page you as hard as an error would. Every serious
+       failure I've had was something that quietly did nothing and looked fine.</p>
+  </div>
+
+  <p style="margin-top:16px">
+    Pick <strong>three</strong> from the next pages. Not thirty. Three you already do
+    by hand, that you'd notice within a day if they stopped. Run them for two weeks.
+    Then come back.
+  </p>
+</section>
+
+<!-- ============================ SALES ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">01</span><span class="t">Sales &amp; pipeline</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The work that happens <em>around</em> selling is the work that
+     doesn't get done. None of this replaces the call. All of it replaces the hour after it.</p>
+
+  <div class="group">
+    <div class="item keep">
+      <div class="num">01</div>
+      <div class="body">
+        <div class="job">Turn every sales call into a CRM update</div>
+        <div class="does">It listens to the recording, writes the summary, updates the deal stage, and lists what you promised the customer.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The deal record changed today. If you had a call and nothing moved, that's a bug — not a quiet day.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">02</div>
+      <div class="body">
+        <div class="job">Draft the follow-up while the call is still warm</div>
+        <div class="does">Within ten minutes of hanging up, a draft is sitting in your inbox with what you agreed and the next date. You edit and send.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A draft exists before you've made coffee. No draft = no call happened, or the agent is down.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">03</div>
+      <div class="body">
+        <div class="job">Tell you which deals have gone quiet</div>
+        <div class="does">It watches for the deals where nobody has spoken in fourteen days and puts them in front of you, oldest first.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A weekly list with names on it. An empty list on a week you know is messy means it isn't looking.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">04</div>
+      <div class="body">
+        <div class="job">Prep you before the intro call</div>
+        <div class="does">Fifteen minutes before the meeting: who they are, what they raised, what they shipped last month, and the three questions worth asking.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A one-pager in your inbox with a timestamp before the meeting starts. Late = useless.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">05</div>
+      <div class="body">
+        <div class="job">Keep the pipeline honest</div>
+        <div class="does">It sweeps for deals rotting in a stage nobody has touched, and asks the owner one question: is this real?</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The stale count, posted every Monday. If it's ever zero, be suspicious — pipelines are never that clean.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">06</div>
+      <div class="body">
+        <div class="job">Answer the security questionnaire</div>
+        <div class="does">It fills the 200-row spreadsheet from your previous answers and flags only the rows it genuinely doesn't know.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The count of rows it left blank. A confident 0-blanks answer is the one to distrust — go read it.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">07</div>
+      <div class="body">
+        <div class="job">Write the pipeline note for your board</div>
+        <div class="does">It turns the CRM into three paragraphs a human investor would actually read, with the numbers attached.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;It's in your drafts before the board email is due, with every number traceable back to a deal.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ MARKETING ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">02</span><span class="t">Marketing &amp; content</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The trap here is asking an agent to have opinions. Don't.
+     Ask it to <em>carry</em> yours — into more places, more often, from things you already made.</p>
+
+  <div class="group">
+    <div class="item keep">
+      <div class="num">08</div>
+      <div class="body">
+        <div class="job">Turn one long thing into ten short things</div>
+        <div class="does">A talk, a doc, a customer call — cut into posts, each one able to stand alone.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Ten drafts land in a folder. You approve or kill each one. Nothing publishes without a click.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">09</div>
+      <div class="body">
+        <div class="job">Write from what you actually shipped</div>
+        <div class="does">It reads the week's changelog and drafts the customer-facing note: what changed, why you'd care.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A draft per release. If you shipped and there's no draft, the pipe is broken.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">10</div>
+      <div class="body">
+        <div class="job">Keep the swipe file</div>
+        <div class="does">Everything that performed well — yours and other people's — captured with a line on why it worked.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The file grows every week. A file that stopped growing is a dead agent.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">11</div>
+      <div class="body">
+        <div class="job">Find the conversations worth joining</div>
+        <div class="does">It surfaces the threads where someone is asking, right now, the exact question your product answers.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A short list, daily, with links. You reply as yourself. The agent never replies.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">12</div>
+      <div class="body">
+        <div class="job">Refresh the page that's gone stale</div>
+        <div class="does">It flags copy that promises things you no longer do, or misses things you now do.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A diff you can read in a minute. Approve, edit, or ignore.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">13</div>
+      <div class="body">
+        <div class="job">Turn real customer questions into content briefs</div>
+        <div class="does">It reads support tickets, clusters the repeated questions, and hands you the ten pieces worth writing.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Each brief cites the tickets it came from. A brief with no tickets under it is invented — bin it.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">14</div>
+      <div class="body">
+        <div class="job">Send the 'what shipped' digest</div>
+        <div class="does">Monthly, to customers, in your voice — every item linked to the thing itself.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;It goes to your drafts, not to the customers. You press send. Always you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SUPPORT ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">03</span><span class="t">Support &amp; customers</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">Keep a human on the send button for anything a customer reads.
+     Automate everything that happens <em>before</em> that button.</p>
+
+  <div class="group">
+    <div class="item keep">
+      <div class="num">15</div>
+      <div class="body">
+        <div class="job">Triage by what people mean, not what they typed</div>
+        <div class="does">Bug, billing, feature request, angry — sorted before anyone opens the inbox.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Every ticket carries a label and a confidence. Low-confidence ones go to a human queue, visibly.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">16</div>
+      <div class="body">
+        <div class="job">Draft the answer, with the doc link attached</div>
+        <div class="does">The reply is written and the relevant doc is found. A human reads it and hits send.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Time-to-first-draft. If a ticket sits with no draft, the agent didn't see it.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">17</div>
+      <div class="body">
+        <div class="job">Turn the question you keep answering into a doc</div>
+        <div class="does">The fifth time the same question arrives, it writes the doc and tells you.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A new doc appears, citing the five tickets. That count is the whole justification.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">18</div>
+      <div class="body">
+        <div class="job">Spot the customer who's about to leave</div>
+        <div class="does">Logins fall off a cliff, usage halves, the champion goes quiet — you hear about it this week, not at renewal.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;An alert with the specific numbers that moved. No numbers, no alert — hunches don't count.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">19</div>
+      <div class="body">
+        <div class="job">Nudge the customer who never finished setup</div>
+        <div class="does">It notices who signed up and never did the one thing that makes the product work, and drafts a human nudge.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The list of who was nudged, and who converted after. If nobody converts, kill it — it's spam.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">20</div>
+      <div class="body">
+        <div class="job">Turn a vague bug report into something reproducible</div>
+        <div class="does">"It's broken" becomes steps, environment, and the log line that matters.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The issue it files either reproduces or it doesn't. That's a hard, honest scoreboard.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">21</div>
+      <div class="body">
+        <div class="job">Write the refund decision memo</div>
+        <div class="does">It assembles the account history, the policy, and a recommendation. A human decides.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A memo per request. The decision line is blank until a person fills it in — by design.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ OPS ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">04</span><span class="t">Operations &amp; money</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">One hard rule, and I mean it: <strong>an agent may draft a
+     money decision, never make one.</strong> Everything below stops one step short of the
+     transaction, on purpose.</p>
+
+  <div class="group">
+    <div class="item keep">
+      <div class="num">22</div>
+      <div class="body">
+        <div class="job">Reconcile the numbers you keep eyeballing</div>
+        <div class="does">The two spreadsheets that should agree, checked every night, with only the differences shown.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A nightly "matched" or "3 rows differ." A night with no message at all means it didn't run — treat that as a failure.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">23</div>
+      <div class="body">
+        <div class="job">Chase the invoices nobody wants to chase</div>
+        <div class="does">Overdue by seven days, it drafts the polite nudge. Overdue by thirty, it drafts the less polite one.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The list of who it chased, posted where you'll see it. Zero chased on a day with overdue invoices is a bug.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">24</div>
+      <div class="body">
+        <div class="job">Audit the subscriptions you forgot you had</div>
+        <div class="does">Every recurring charge, matched against whether anyone logged in this quarter.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A list with a total at the bottom. Most founders find four figures a year on the first run.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">25</div>
+      <div class="body">
+        <div class="job">Watch the cloud bill for the shape change</div>
+        <div class="does">Not the total — the shape. It tells you when something that cost $8 a day starts costing $80.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;An alert naming the line item and the day it changed. Totals hide this; line items don't.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">26</div>
+      <div class="body">
+        <div class="job">Turn receipts into a ledger</div>
+        <div class="does">Photograph, forward, or drop it. It's categorised and filed before your accountant asks.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The count filed this month vs. the count on your card statement. Those numbers must match.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">27</div>
+      <div class="body">
+        <div class="job">Read the contract first</div>
+        <div class="does">It flags auto-renewal, liability, exclusivity, and anything unusual — with the clause quoted.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Flags always quote the clause. A flag with no quote is a hallucination, and you'll spot it instantly.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">28</div>
+      <div class="body">
+        <div class="job">Collect the compliance evidence continuously</div>
+        <div class="does">The screenshots and logs your auditor will want, gathered as you go instead of in one miserable week.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The evidence folder has this week's date in it. Stale folder = dead agent.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">29</div>
+      <div class="body">
+        <div class="job">Write the Monday numbers email</div>
+        <div class="does">The five numbers that matter, what changed, and one sentence on why — before you're awake.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;It arrives every Monday. A Monday with no email is an incident, not a break.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ENGINEERING ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">05</span><span class="t">Engineering</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">Even if you don't write code, read this one. It's where your
+     team is quietly losing days — and where the receipts are easiest to see.</p>
+
+  <div class="group">
+    <div class="item keep">
+      <div class="num">30</div>
+      <div class="body">
+        <div class="job">Review the code before a human does</div>
+        <div class="does">First pass on every pull request. It only speaks when it can point at a line and say why.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Comments cite file and line. A review with no line numbers is noise — configure it to stay quiet instead.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">31</div>
+      <div class="body">
+        <div class="job">Write the test that reproduces the bug</div>
+        <div class="does">Before anyone fixes anything, there's a failing test that proves the bug is real.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The test fails before the fix and passes after. If it passes before the fix, it's testing nothing.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">32</div>
+      <div class="body">
+        <div class="job">Keep dependencies moving</div>
+        <div class="does">Small upgrades, continuously, with the test suite as the judge — instead of one terrifying upgrade a year.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Green suite, merged. Red suite, it stops and tells you which package broke.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">33</div>
+      <div class="body">
+        <div class="job">Draft the postmortem while it's fresh</div>
+        <div class="does">It assembles the timeline from the alerts, the deploys and the chat, so a human writes the analysis, not the archaeology.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A timeline with timestamps you can check against the logs yourself.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">34</div>
+      <div class="body">
+        <div class="job">Catch the slow query before your customers do</div>
+        <div class="does">The database call that runs 400 times when it should run once, flagged in review.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;It names the query and the count. Numbers, not adjectives.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">35</div>
+      <div class="body">
+        <div class="job">Keep the docs honest</div>
+        <div class="does">When the code changes and the README doesn't, it notices and drafts the fix.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The diff between what the docs claim and what the code does. Empty diff = they agree.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">36</div>
+      <div class="body">
+        <div class="job">Check the migration won't take the site down</div>
+        <div class="does">The schema change that locks a table for nine minutes on production data, caught before it ships.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A verdict with the estimated lock time, on a copy of real data volumes — not on your laptop's 40 rows.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">37</div>
+      <div class="body">
+        <div class="job">Hunt the flaky test</div>
+        <div class="does">It runs the suspicious test a hundred times and tells you the failure rate, instead of everyone shrugging and hitting retry.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;"Fails 6 times in 100." Now it's a number, and numbers get fixed.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">38</div>
+      <div class="body">
+        <div class="job">Build the prototype so the meeting has something to look at</div>
+        <div class="does">A clickable version of the idea, same day, before anyone commits a quarter to it.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A link that opens. Every button goes somewhere, or it isn't done.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">39</div>
+      <div class="body">
+        <div class="job">Audit the codebase you're about to inherit</div>
+        <div class="does">Before you hire, before you acquire, before you say yes — what's actually in there.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A ranked report where every finding points at a file. Findings without files are vibes.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">40</div>
+      <div class="body">
+        <div class="job">Turn the error tracker into a to-do list</div>
+        <div class="does">Ranked by how many real customers hit it, not by how loud it is.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The rank order and the user counts behind it. You'll disagree with the top item once, and be wrong.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ HIRING ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">06</span><span class="t">Hiring &amp; people</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The line here is sharp: an agent may <em>prepare</em> a
+     judgement about a person. It may never <em>make</em> one. Prepare, then you decide.</p>
+
+  <div class="group">
+    <div class="item keep">
+      <div class="num">41</div>
+      <div class="body">
+        <div class="job">Screen applications against the actual job</div>
+        <div class="does">Not keywords — the job. It sorts, explains why, and never rejects anyone by itself.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Every ranking has a written reason you can argue with. If you can't argue with it, it isn't a reason.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">42</div>
+      <div class="body">
+        <div class="job">Turn interview notes into a scorecard</div>
+        <div class="does">Your scribbles, structured against the same criteria for every candidate, so you compare like with like.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;A filled scorecard per interview, within the hour. Empty fields stay visibly empty.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">43</div>
+      <div class="body">
+        <div class="job">Get the reply out the same day</div>
+        <div class="does">Offer or rejection, drafted immediately, so nobody waits two weeks to hear no. You send it.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Time from decision to draft. The number that matters — and the one that makes people respect you.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">44</div>
+      <div class="body">
+        <div class="job">Build the 30-day plan before they start</div>
+        <div class="does">Per role: what they read, who they meet, what they ship in week one.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The plan exists before day one. A plan written on day three is a plan that doesn't exist.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">45</div>
+      <div class="body">
+        <div class="job">Prep your 1:1s</div>
+        <div class="does">What they said last time, what they were blocked on, whether it moved.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;It shows you last week's blocker and whether it's still there. That one line changes the meeting.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ YOU ============================ -->
+<section class="page">
+  <div class="sec-head">
+    <span class="n">07</span><span class="t">You</span><span class="fill"></span>
+  </div>
+  <p style="margin-bottom:14px">The last five are the ones founders skip and then wish they
+     hadn't. Your attention is the scarcest thing in the company. Defend it like a budget.</p>
+
+  <div class="group">
+    <div class="item keep">
+      <div class="num">46</div>
+      <div class="body">
+        <div class="job">Write the Friday brief you never write</div>
+        <div class="does">What moved, what didn't, what you said you'd do and didn't do.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;It arrives Friday. The "didn't do" section is the one worth reading, so it never gets dropped.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">47</div>
+      <div class="body">
+        <div class="job">Kill the meeting that should have been a document</div>
+        <div class="does">It drafts the doc from the agenda. If the doc answers it, cancel the meeting.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Meetings cancelled. Count them. That's hours back, and it's a real number.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">48</div>
+      <div class="body">
+        <div class="job">Triage your inbox by 'does this need a founder?'</div>
+        <div class="does">Most of it doesn't. It surfaces the handful that genuinely need you.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;The count it held back, visible daily. If you never disagree with what it filtered, you aren't checking.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">49</div>
+      <div class="body">
+        <div class="job">Research the decision before you make it</div>
+        <div class="does">The memo — options, trade-offs, what it costs — sitting there before the call, not improvised during it.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;Every claim in the memo carries a source. A claim without a source is an opinion wearing a suit.</div>
+      </div>
+    </div>
+    <div class="item keep">
+      <div class="num">50</div>
+      <div class="body">
+        <div class="job">Watch your other agents</div>
+        <div class="does">One agent whose only job is to notice when another one has quietly stopped doing anything.</div>
+        <div class="receipt"><b>Receipt</b> &nbsp;It reports on the ones that produced nothing. Then break it on purpose and confirm it screams. If it doesn't scream, you are back where you started — and you won't know it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CLOSING ============================ -->
+<section class="page close">
+  <div class="sec-head">
+    <span class="n">08</span><span class="t">What to do on Monday</span><span class="fill"></span>
+  </div>
+
+  <h2>Where this goes wrong, and how you'll know.</h2>
+
+  <p class="pull">
+    "The first thing that breaks won't be the agent. It'll be your ability to tell
+    whether the agent did anything at all."
+  </p>
+
+  <p>
+    Here's the failure I want you to expect, because it's the one I keep having. You
+    wire something up. It works. You stop watching it. Three weeks later you find out
+    it stopped working on day four — and nothing anywhere told you, because
+    <em>nothing</em> is exactly what a broken automation produces.
+  </p>
+
+  <p>
+    Every serious failure in my own systems has had that same shape. A monitor that
+    matched itself and reported health. A publish button that reported success and
+    posted nothing. A guard against double-posting that never ran, so it looked like it
+    worked. All of them were <strong>instruments that couldn't tell success from
+    nothing</strong>.
+  </p>
+
+  <p>
+    Which is why the fix is boringly mechanical, and why I'll keep repeating it:
+    <strong>test the refusals first.</strong> Before you trust an automation, break it
+    on purpose. Unplug it and confirm something screams. If nothing screams, you don't
+    have an automation — you have a rumour that one exists.
+  </p>
+
+  <div class="rule" style="margin:18px 0 16px"></div>
+
+  <h3 style="margin-bottom:8px">Your first two weeks</h3>
+  <p><strong>Week 1.</strong> Pick three from this list. Boring, repetitive, checkable.
+     Write down the receipt for each one <em>before</em> you build it. Build the smallest
+     version that produces that receipt.</p>
+  <p><strong>Week 2.</strong> Break each one on purpose. Did you find out? If not, fix the
+     receipt — not the agent. Then, and only then, add the fourth.</p>
+  <p style="margin-bottom:0">That's it. That's the whole method. It is not sophisticated and
+     it is the reason my systems are still standing.</p>
+
+  <div class="links">
+    <div class="row">
+      <span class="k">The receipts</span>
+      <span class="v"><a href="https://github.com/kurenn/field-notes">github.com/kurenn/field-notes</a>
+        — every time one of my systems lied to me, written up in public, including the
+        ones that made me look bad.</span>
+    </div>
+    <div class="row">
+      <span class="k">The numbers</span>
+      <span class="v"><a href="https://kurenn.dev">kurenn.dev</a>
+        — two multi-agent architectures, ten real tasks, $144.72 on the meter, and the
+        finding that 69% of the bill was agents talking to each other.</span>
+    </div>
+    <div class="row">
+      <span class="k">The tools</span>
+      <span class="v"><a href="https://github.com/kurenn">github.com/kurenn</a>
+        — the agent teams, the audit tools and the prototyping kit I use for all of this.
+        Open source, free.</span>
+    </div>
+    <div class="row">
+      <span class="k">Say hello</span>
+      <span class="v"><a href="https://x.com/kurenn">x.com/kurenn</a> ·
+        <a href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/">LinkedIn</a>
+        — tell me which three you picked. I read every one, and I'll tell you if I think
+        you picked wrong.</span>
+    </div>
+  </div>
+
+  <div class="sig">
+    <span>Abraham Kuri — Mexico City</span>
+    <span>kurenn.dev</span>
+  </div>
+</section>
+
+</body>
+</html>

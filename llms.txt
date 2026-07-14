@@ -12,8 +12,12 @@ He is CTO and co-founder of **Coba (YC S23)**, and a **board member at Icalia La
 
 ## Pages
 
-- [Home](https://kurenn.dev/): Proof of work — the cost benchmark with full methodology, six open-source tools, the four things that didn't work, and how to book a sprint.
+- [Home](https://kurenn.dev/): Proof of work — the cost benchmark with full methodology, six open-source tools, the four things that didn't work, and a free guide.
 - [Sprint](https://kurenn.dev/sprint/): A one-week, $5,000 flat-rate AI application sprint. One client per month.
+
+## Free guide
+
+**50 Things You Could Be Automating With Your AI Agent** — a founder's playbook for turning manual work into agent-run systems across sales, marketing, support, ops and engineering. Its argument: every automation must ship with a *receipt* — the artefact you look at to know it really ran — because the default failure of an automated system is not doing the wrong thing loudly, it is doing nothing quietly. Free, available from the form at [kurenn.dev](https://kurenn.dev/).
 
 ## Open source
 
