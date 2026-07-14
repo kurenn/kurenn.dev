@@ -12,8 +12,8 @@ He is CTO and co-founder of **Coba (YC S23)**, and a **board member at Icalia La
 
 ## Pages
 
-- [Home](https://kurenn.dev/): A one-week, $5,000 flat-rate AI application sprint. One client per month.
-- [Work](https://kurenn.dev/work/): Proof of work — the cost benchmark with full methodology, six open-source tools, and the four things that didn't work.
+- [Home](https://kurenn.dev/): Proof of work — the cost benchmark with full methodology, six open-source tools, the four things that didn't work, and how to book a sprint.
+- [Sprint](https://kurenn.dev/sprint/): A one-week, $5,000 flat-rate AI application sprint. One client per month.
 
 ## Open source
 
