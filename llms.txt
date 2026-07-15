@@ -17,7 +17,7 @@ He is CTO and co-founder of **Coba (YC S23)**, and a **board member at Icalia La
 
 ## Free guide
 
-**50 Things You Could Be Automating With Your AI Agent** — a founder's playbook for turning manual work into agent-run systems across sales, marketing, support, ops and engineering. Its argument: every automation must ship with a *receipt* — the artefact you look at to know it really ran — because the default failure of an automated system is not doing the wrong thing loudly, it is doing nothing quietly. Free, available from the form at [kurenn.dev](https://kurenn.dev/).
+**Doing Less, On Purpose** — a field guide on how the right Rails skills made an AI coding bill 12× smaller. Built from a controlled benchmark of two ways of using AI on ten real Rails tasks ($144.72 on the meter, every diff read by hand): a specialist-swarm that spawns a separate process per specialist, versus a triage-first system that sizes each ticket up before dispatching. The finding: 7–34× cheaper and 2–7× faster, because 69% of the swarm's bill was the orchestrator coordinating with its own specialists rather than writing code — a process-boundary problem, not a prompt problem. Closes with the four rules of a good skill: triage before dispatch, tests-first where it counts, gates on demand, receipts always. Free, available from the form at [kurenn.dev](https://kurenn.dev/).
 
 ## Open source
 
