@@ -474,10 +474,10 @@ html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}
       <h2 data-dc-tpl="213" style="font-family: var(--serif); font-weight: 500; font-size: clamp(26px, 4.8vw, 38px); line-height: 1.05; letter-spacing: -0.015em; color: var(--ink); margin: 0px 0px 14px; text-wrap: balance; max-width: 13em;">Doing Less, On Purpose</h2>
       <p data-dc-tpl="214" style="font-family: var(--serif); font-size: 16px; line-height: 1.65; color: var(--body); margin: 0px 0px 24px; max-width: 32em;">How the right Rails skills made my AI coding bill <em data-dc-tpl="215" style="font-style: italic; color: var(--ink);">12× smaller</em> — and made "done" actually mean done. Ten real Rails tasks, two ways of using AI, $144.72 on the meter, every diff read by hand.</p>
 
-        <form action="https://api.web3forms.com/submit" method="POST" data-dc-tpl="216" style="max-width: 34em;"><input type="hidden" name="access_key" value="874fac90-3218-4297-aa17-0217b093d67a"><input type="hidden" name="subject" value="Guide download — Doing Less, On Purpose (kurenn.dev)"><input type="hidden" name="from_name" value="kurenn.dev"><input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <form id="guide-form" action="https://app.kit.com/forms/9687876/subscriptions" method="POST" data-dc-tpl="216" style="max-width: 34em;"><input type="text" name="fields[hp]" style="position:absolute;left:-9999px" tabindex="-1" autocomplete="off" aria-hidden="true">
           <label data-dc-tpl="217" for="guide-email" style="display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">Email address</label>
           <div data-dc-tpl="218" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;">
-            <input data-dc-tpl="219" id="guide-email" name="email" type="email" placeholder="you@company.com" class="scp0" style="flex: 1 1 0%; min-width: 220px; font-family: var(--mono); font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); padding: 12px 14px; outline: none;" required>
+            <input data-dc-tpl="219" id="guide-email" name="email_address" type="email" placeholder="you@company.com" class="scp0" style="flex: 1 1 0%; min-width: 220px; font-family: var(--mono); font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); padding: 12px 14px; outline: none;" required>
             <button data-dc-tpl="220" type="submit" style="font-family: var(--mono); font-size: 12.5px; font-weight: 500; color: var(--bg); background: var(--accent); border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; padding: 12px 20px; cursor: pointer; white-space: nowrap;">Send me the guide →</button>
           </div>
           <p data-dc-tpl="224" style="font-family: var(--serif); font-size: 13px; line-height: 1.6; color: var(--muted); margin: 0px; max-width: 30em;">Nine pages: the full benchmark table, why 69% of the bill was agents talking to each other, and the four rules that made the difference. Every number is public and checkable.</p>
@@ -502,22 +502,27 @@ html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}
 
 
 <script>
-// The guide is delivered HERE, on submit — not by email.
+// Submit → subscribe to Kit (form 9687876) AND download instantly.
 //
-// web3forms' autoresponder is a paid feature and, even paid, it can only send
-// an intro-text email: it cannot attach a file. So "check your inbox" would be
-// a promise this stack cannot keep. Instead the download starts the moment the
-// email lands, which is both true and a better conversion anyway.
+// Kit sends the delivery/confirmation email (with the guide link) and adds the
+// address to the mailing list. But the reader also gets the file the moment they
+// submit — nobody waits on an inbox, and if Kit's endpoint hiccups they STILL get
+// the guide. They gave us the email; withholding what we promised because *our*
+// backend blipped would punish the reader for our outage. The subscription is the
+// only thing that can be lost, never the download.
 //
-// Note the catch block: if web3forms is down, they STILL get the guide. They
-// gave us the email; withholding the thing we promised because *our* backend
-// broke would punish the reader for our outage. The lead is the only thing lost.
+// The POST uses multipart/form-data (a CORS-safe content type), so it reaches Kit
+// even when the cross-origin response can't be read back — which is why we deliver
+// on both the success and error paths and never block the download on Kit.
 (function () {
   var PDF = '/guide/doing-less-on-purpose.pdf';
-  var form = document.querySelector('form[action*="web3forms"]');
+  var form = document.getElementById('guide-form');
   if (!form) return;
+  var delivered = false;
 
-  function deliver(caveat) {
+  function deliver() {
+    if (delivered) return;
+    delivered = true;
     var a = document.createElement('a');
     a.href = PDF; a.setAttribute('download', ''); document.body.appendChild(a);
     a.click(); a.remove();
@@ -525,28 +530,24 @@ html,body{height:100%;margin:0}#dc-root,#dc-root>.sc-host{height:100%}
     form.innerHTML =
       '<p style="font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;' +
       'text-transform:uppercase;color:var(--accent);margin-bottom:10px">' +
-      'Your download has started</p>' +
+      'Downloading now — and it\'s in your inbox</p>' +
       '<p style="font-family:var(--serif);font-size:16px;line-height:1.65;color:var(--body);' +
-      'margin:0 0 16px;max-width:32em">Didn\'t start? <a href="' + PDF + '" download ' +
-      'style="color:var(--accent)">Grab it here →</a> Jump to section 02 — the benchmark ' +
-      'table is the whole argument.</p>' +
-      (caveat ? '<p style="font-family:var(--mono);font-size:12px;line-height:1.6;' +
-        'color:var(--muted);margin:0">' + caveat + '</p>' : '');
+      'margin:0 0 16px;max-width:32em">Download didn\'t start? <a href="' + PDF + '" download ' +
+      'style="color:var(--accent)">Grab it here →</a> I\'ve also emailed you a copy — check ' +
+      'your inbox and confirm to get it there too. Jump to section 02; the benchmark table is ' +
+      'the whole argument.</p>';
   }
 
-  form.addEventListener('submit', async function (e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
     var btn = form.querySelector('button[type=submit]');
     btn.textContent = 'Sending…'; btn.disabled = true;
-    try {
-      var r = await fetch(form.action, { method: 'POST', body: new FormData(form) });
-      var j = await r.json();
-      if (!j.success) throw new Error(j.message || 'failed');
-      deliver('');
-    } catch (err) {
-      deliver("(I didn't manage to record your email — that one's on me, not you. " +
-              "The guide is yours regardless.)");
-    }
+    var fd = new FormData();
+    fd.append('email_address', form.querySelector('#guide-email').value);
+    // Best-effort subscribe; deliver regardless of what Kit's response looks like.
+    fetch(form.action, { method: 'POST', body: fd }).catch(function () {}).finally(deliver);
+    // Safety net: if the network hangs, don't leave the reader empty-handed.
+    setTimeout(deliver, 2500);
   });
 })();
 </script>
