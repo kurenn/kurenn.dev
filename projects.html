@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" data-theme="bone" data-layout="index" data-motion="standard">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects — Abraham Kuri</title>
+  <meta name="description" content="DevLoop, Olympus, Coba and Claude Prototype: four systems built toward the same future." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23F6F5F1'/><text x='50' y='72' text-anchor='middle' font-size='64' font-family='system-ui,sans-serif' font-weight='600' fill='%23111110'>K</text></svg>" />
+  <link rel="canonical" href="https://kurenn.dev/projects.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kurenn.dev/projects.html" />
+  <meta property="og:title" content="Projects — Abraham Kuri" />
+  <meta property="og:description" content="DevLoop, Olympus, Coba and Claude Prototype: four systems built toward the same future." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@kurenn" />
+  <script src="js/vt.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            surface:  'rgb(var(--surface)  / <alpha-value>)',
+            elevated: 'rgb(var(--elevated) / <alpha-value>)',
+            accent:   'rgb(var(--accent)   / <alpha-value>)',
+            muted:    'rgb(var(--muted)    / <alpha-value>)',
+            ink:      'rgb(var(--ink)      / <alpha-value>)',
+            ink2:     'rgb(var(--ink2)     / <alpha-value>)',
+            ink3:        'rgb(var(--ink3)        / <alpha-value>)',
+            hairline:    'rgb(var(--hairline)    / <alpha-value>)',
+            'elevated-2':'rgb(var(--elevated-2)  / <alpha-value>)',
+            'accent-ink':'rgb(var(--accent-ink)  / <alpha-value>)',
+          },
+          fontFamily: {
+            heading: ['Instrument Sans', 'system-ui', 'sans-serif'],
+            body:    ['Instrument Sans', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: { proto: 'var(--radius)' },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-surface text-ink font-body antialiased">
+  <a class="proto-skip" href="#main">Skip to content</a>
+  <header class="wrap top" style="view-transition-name: app-header">
+    <a href="index.html" class="name">Abraham Kuri</a>
+    <nav class="sections" aria-label="Primary"><a href="manifesto.html"><span>01</span>Manifesto</a><a href="projects.html" aria-current="page"><span>02</span>Projects</a><a href="open-source.html"><span>03</span>Open source</a><a href="contact.html"><span>04</span>Contact</a></nav>
+  </header>
+  <main id="main" tabindex="-1" class="wrap">
+    <section class="g12 intro" aria-labelledby="proj-h">
+      <p class="meta">Projects</p>
+      <h1 id="proj-h">These are the systems I’m building to make that future real.</h1>
+    </section>
+    <div data-render="projects"></div>
+    <section class="g12 closing" aria-label="Next">
+      <p>Some of it is open source.</p>
+      <div><a href="open-source.html" class="text-link">Building in public →</a></div>
+    </section>
+  </main>
+  <footer class="foot">
+    <div class="wrap"><span>© 2026 Abraham Kuri</span><nav aria-label="Elsewhere"><a href="https://github.com/kurenn" target="_blank" rel="noopener">GitHub</a><a href="https://x.com/kurenn" target="_blank" rel="noopener">X</a><a href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/" target="_blank" rel="noopener">LinkedIn</a></nav></div>
+  </footer>
+
+  <script src="js/state.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

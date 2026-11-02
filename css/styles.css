@@ -1,0 +1,1213 @@
+/*
+ * Design tokens per theme.
+ * Every color = CSS var (RGB channels, space-separated, no commas) so Tailwind's
+ * `<alpha-value>` works: bg-accent/50, text-ink/70, etc.
+ * Flip themes by changing [data-theme] on <html>.
+ *
+ * Pick the palette per tone from reference/color-palettes.md. Tint every neutral
+ * (OKLCH chroma .005–.015) — never flat gray, #000, or #fff. Dark themes elevate
+ * with lighter surfaces (not shadow) + a desaturated accent. These three are tinted
+ * starting points; a build replaces them with the chosen palette's themes.
+ */
+
+html[data-theme="bone"] {
+  --surface: 246 245 241;
+  --elevated: 251 250 247;
+  --elevated-2: 237 235 230;
+  --ink: 17 17 16;
+  --ink2: 74 73 69;
+  --ink3: 110 108 102;
+  --hairline: 222 220 214;
+  --muted: 163 161 154;
+  --accent: 17 17 16;
+  --accent-ink: 246 245 241;
+  --status-error: 176 48 40;
+  --radius: 0px;
+  --shadow-sm: none; --shadow-md: none; --shadow-lg: none;
+}
+
+html[data-theme="carbon"] {
+  --surface: 17 17 16;
+  --elevated: 25 25 23;
+  --elevated-2: 34 34 32;
+  --ink: 238 237 233;
+  --ink2: 169 167 161;
+  --ink3: 140 138 132;
+  --hairline: 42 41 39;
+  --muted: 85 83 79;
+  --accent: 238 237 233;
+  --accent-ink: 17 17 16;
+  --status-error: 248 113 113;
+  --radius: 0px;
+  --shadow-sm: none; --shadow-md: none; --shadow-lg: none;
+  color-scheme: dark;
+}
+
+/* Anti-FOUC: paint the base background/text from these render-blocking tokens
+   immediately, instead of waiting on Tailwind CDN's runtime-generated `bg-surface`
+   utility. `<link rel="stylesheet" href="css/styles.css">` blocks rendering, so
+   this resolves before first paint (once the inline <head> script has set
+   data-theme); `<body class="bg-surface text-ink">` then reapplies the same
+   values redundantly once Tailwind loads — no visible change, no flash. */
+html { background-color: rgb(var(--surface)); color: rgb(var(--ink)); }
+
+/* Type scale — committed 1.25 major third (fixed rem for UI; hero uses --text-display clamp).
+   Floor defaults: the per-prototype DESIGN.md may retune values, but keep one committed ratio.
+   Pick the tone's font pairing from reference/type-pairings.md. */
+:root {
+  --text-xs:      .75rem;   /* 12 · captions, legal, meta labels */
+  --text-sm:      .875rem;  /* 14 · secondary UI, table meta */
+  --text-base:    1rem;     /* 16 · body (never smaller) */
+  --text-lg:      1.25rem;  /* 20 · lead, subhead */
+  --text-xl:      1.563rem; /* 25 · h4 */
+  --text-2xl:     1.953rem; /* 31 · h3 */
+  --text-3xl:     2.441rem; /* 39 · h2 */
+  --text-4xl:     3.052rem; /* 49 · h1 */
+  --text-display: clamp(2.5rem, 6vw, 4rem); /* hero headline only */
+
+  /* Motion — ease-out dominant; never `ease` / `ease-in` / linear / bounce for a discrete
+     UI move (linear is reserved for continuous loops: spinners, shimmer). Two axes:
+       · named curves  — pick by the *kind* of move
+       · duration scale — pick by travel distance / element size (bigger move = longer)
+     Enter ≠ exit: an exit runs ~75% of its entrance and can use a snappier curve. */
+  --ease-out-quart: cubic-bezier(.25, 1, .5, 1);       /* entrances: UI, controls, toasts */
+  --ease-out-expo:  cubic-bezier(.16, 1, .3, 1);       /* reveals, larger on-enter moves */
+  --ease-in-out-strong: cubic-bezier(.77, 0, .175, 1); /* on-screen moves (A→B, reposition) */
+  --ease-ios:       cubic-bezier(.32, .72, 0, 1);      /* drawers / sheets / slide-overs */
+  /* Spring — expressive motion tier only (html[data-motion="expressive"] applies it to
+     .enter / key entrances). Gentle overshoot (~2%), never a trampoline. This cubic-bezier
+     is the actual fallback where linear() isn't supported, so it has to genuinely spring —
+     P1's y=1.25 control point produces the ~2% peak; the linear() @supports override below
+     shapes the settle precisely where it IS supported. Reserved for entrances — reduced
+     motion neutralizes it (the global block clamps transition-duration, so the curve never
+     runs). */
+  --spring: cubic-bezier(.3, 1.25, .5, 1);
+  /* Duration scale, keyed to importance/distance — a finer-grained companion to the coarse
+     --motion-* scale below. BOTH are live: new work reaches for --dur-*, existing components
+     keep --motion-*; don't diverge the shared ones. Rough mapping:
+       press(130) < fast(180) ≈ motion-fast(150) · base(240) ≈ motion(250) · slow(320) < motion-slow(400). */
+  --dur-press: 130ms;   /* tap / :active feedback — smallest, fastest */
+  --dur-fast:  180ms;   /* small moves: hover, toggle, chip, tooltip */
+  --dur-base:  240ms;   /* default: most component transitions */
+  --dur-slow:  320ms;   /* larger moves: drawers, modals, section entrances */
+  --motion-fast: 150ms; /* coarse scale, kept for existing components — do not diverge */
+  --motion:      250ms;
+  --motion-slow: 400ms;
+
+  /* Spacing — 4pt scale. Use `gap`, not per-element margins. Rhythm: tight
+     in-group (--space-2/3), generous between sections (--space-8/9). */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Depth — subtle shadow scale (light) + semantic z-index. Dark themes set
+     --shadow-* to none and elevate with --elevated / --elevated-2 instead. */
+  --shadow-sm: 0 1px 2px rgb(20 30 24 / .05);
+  --shadow-md: 0 2px 4px rgb(20 30 24 / .06), 0 4px 12px rgb(20 30 24 / .05);
+  --shadow-lg: 0 4px 8px rgb(20 30 24 / .07), 0 12px 28px rgb(20 30 24 / .08);
+  --z-dropdown: 200;
+  --z-sticky:   400;
+  --z-modal:    600;
+  --z-toast:    800;
+  --z-tooltip: 1000;
+  --z-feedback: 1100; /* review overlay — above all prototype UI */
+}
+
+/* Precise spring settle where linear() easing is supported (Chrome 113+ / Safari 17.2+ /
+   FF 112+). Peaks at ~1.025 (a ~2.5% overshoot) then settles to 1 — gentle, not bouncy.
+   Falls back to the cubic-bezier --spring above where linear() isn't supported. */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring: linear(
+      0, 0.104 3.4%, 0.386 8.7%, 0.727 15%, 0.928 20.4%, 1.006 24.3%,
+      1.025 30%, 1.022 37.9%, 1.004 50%, 0.997 61.5%, 1
+    );
+  }
+}
+
+/* Typographic polish — floor defaults; apply on top of the chosen pairing. */
+h1, h2, h3 { text-wrap: balance; overflow-wrap: anywhere; } /* balance ragged lines; anywhere lets a long unbroken token (URL / slug / ID) wrap instead of overflowing at 390px — builtin-lint rule 24 */
+p          { text-wrap: pretty; }
+body       { font-optical-sizing: auto; }
+.tabular, [data-tabular] { font-variant-numeric: tabular-nums; } /* numeric cells / KPIs */
+.eyebrow   { text-transform: uppercase; letter-spacing: .1em; font-size: var(--text-xs); }
+
+/* Baseline card — subtle shadow in light; dark themes drop it (--shadow-* none) and lift
+   via --elevated surface contrast. Builds may extend .card, but keep depth a whisper. */
+.card {
+  background: rgb(var(--elevated));
+  border: 1px solid rgb(var(--muted) / .18);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Shared components — a small set every build can extend beyond .card, so
+ * KPI strips / filter rows / tables / forms don't get reinvented from scratch
+ * per prototype. Tokens only (surface/elevated/ink/accent/hairline/space/radius/
+ * shadow) — no gradients, no colors outside the one accent + the existing
+ * success/error status pair already used by .proto-toast. Builds may restyle
+ * these, but keep them token-driven so a theme swap doesn't break them. */
+
+/* .stat — KPI tile. Group 2-4 in a .proto-grid row. */
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  background: rgb(var(--elevated));
+  border: 1px solid rgb(var(--hairline));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.stat-label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: rgb(var(--ink2));
+}
+.stat-value {
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  color: rgb(var(--ink));
+  font-variant-numeric: tabular-nums; /* also covered by .tabular if applied directly */
+}
+.stat-delta {
+  font-size: var(--text-sm);
+  color: rgb(var(--ink2));
+}
+
+/* .chip — filter pill / tag / status label. `.is-active` for a selected filter;
+   `.is-muted` for a disabled/inactive one. Same "is-" state prefix as
+   .is-loading / .is-error / .is-success elsewhere in this file. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  border: 1px solid rgb(var(--hairline));
+  background: rgb(var(--surface));
+  color: rgb(var(--ink2));
+  font-size: var(--text-xs);
+  line-height: 1;
+  white-space: nowrap;
+}
+.chip.is-active {
+  background: rgb(var(--accent));
+  border-color: rgb(var(--accent));
+  color: rgb(var(--accent-ink));
+}
+.chip.is-muted { opacity: .6; }
+
+/* .table — put on the <table> itself, inside the existing .proto-table-wrap
+   (that wrapper only handles horizontal overflow; this handles the look). */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  border-bottom: 1px solid rgb(var(--hairline));
+}
+.table th {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  font-weight: 600;
+  color: rgb(var(--ink2));
+  background: rgb(var(--elevated-2));
+}
+.table tbody tr:last-child td { border-bottom: 0; }
+@media (hover: hover) {
+  .table tbody tr:hover { background: rgb(var(--muted) / .06); }
+}
+
+/* .form-field — label + control + optional hint/error, stacked. Pairs with the
+   "form state persistence" + "inline error on blur" guidance in reference/build.md. */
+.form-field { display: flex; flex-direction: column; gap: var(--space-1); }
+.form-field > label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: rgb(var(--ink));
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: .55rem .75rem;
+  border-radius: var(--radius);
+  border: 1px solid rgb(var(--hairline));
+  background: rgb(var(--elevated));
+  color: rgb(var(--ink));
+  font: inherit;
+}
+.form-field .hint {
+  font-size: var(--text-xs);
+  color: rgb(var(--ink2));
+  min-height: 1lh; /* reserve the message slot so an error appearing on blur doesn't shove layout — builtin-lint rule 27 */
+}
+/* Error state reuses the --status-error token, same as .proto-toast.is-error. */
+.form-field.has-error input,
+.form-field.has-error select,
+.form-field.has-error textarea {
+  border-color: rgb(var(--status-error));
+}
+.form-field .error { font-size: var(--text-xs); color: rgb(var(--status-error)); min-height: 1lh; }
+
+/* Interaction floor — Tailwind's reset drops focus rings; ship one globally, plus a press
+   micro-interaction. Keep custom :hover styles behind @media (hover:hover) so they don't
+   stick on touch. :where() keeps specificity 0 so product styles win.
+   The ring is ink, not accent: a light accent (mint, lime, pale gold) on a light surface
+   falls under WCAG's 3:1 for focus indicators, and ink clears it in every theme. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid rgb(var(--ink));
+  outline-offset: 2px;
+}
+:where(button:not([disabled])):active { transform: translateY(1px); }
+
+/* Imagery — initials avatar + aspect-ratio media placeholder. Prefer these over flat
+   color-block "photos". Icons: copy inline SVG from reicon.dev (MIT) at one weight.
+   .media API: drop an <img> inside and it fills the box, no other markup changes —
+   `<div class="media"><img src="assets/images/…" alt="…"></div>`. Leave it empty (or
+   add data-scene, below) and the wash/scene placeholder shows instead. Real photos are
+   the goal for photo-forward products (marketplaces, listings, profiles) — see
+   reference/build.md "Real imagery" before shipping a placeholder in one of those. */
+.avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.5rem; height: 2.5rem; border-radius: 999px;
+  background: rgb(var(--accent)); color: rgb(var(--accent-ink, var(--surface)));
+  font-weight: 600; font-size: .85rem; letter-spacing: .02em; flex: none;
+}
+.media {
+  position: relative;
+  aspect-ratio: 4 / 3; width: 100%; border-radius: var(--radius); overflow: hidden;
+  background: linear-gradient(135deg, rgb(var(--accent) / .18), rgb(var(--muted) / .12));
+}
+.media > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Scene placeholders — a better-than-glyph fallback for when real photos aren't in
+   hand yet. Add data-scene to an *empty* .media (never alongside a real <img> — the
+   photo should always win). Three tasteful, generic silhouettes cut from the wash via
+   mask-image, so they inherit the theme instead of looking like clip art:
+   - "landscape"  — venues, real estate, travel, any outdoor/place listing.
+   - "portrait"   — profile / person cards where an initials .avatar reads too small.
+   - "still-life" — marketplace products, objects, anything shot on a surface.
+   These are still placeholders, not a substitute for asking the user for real images. */
+.media[data-scene]::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgb(var(--accent) / .38), rgb(var(--muted) / .28));
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center 65%; mask-position: center 65%;
+  -webkit-mask-size: 58%; mask-size: 58%;
+}
+.media[data-scene="landscape"]::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='72' cy='28' r='10'/%3E%3Cpath d='M0 70 L25 45 L45 62 L62 38 L100 70 Z'/%3E%3Cpath d='M0 82 L20 65 L40 78 L58 60 L100 82 L100 100 L0 100 Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='72' cy='28' r='10'/%3E%3Cpath d='M0 70 L25 45 L45 62 L62 38 L100 70 Z'/%3E%3Cpath d='M0 82 L20 65 L40 78 L58 60 L100 82 L100 100 L0 100 Z'/%3E%3C/svg%3E");
+}
+.media[data-scene="portrait"]::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='36' r='18'/%3E%3Cpath d='M14 100 C14 74 30 60 50 60 C70 60 86 74 86 100 Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='36' r='18'/%3E%3Cpath d='M14 100 C14 74 30 60 50 60 C70 60 86 74 86 100 Z'/%3E%3C/svg%3E");
+}
+.media[data-scene="still-life"]::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='82' rx='38' ry='8'/%3E%3Crect x='30' y='34' width='40' height='46' rx='10'/%3E%3Ccircle cx='50' cy='30' r='16'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cellipse cx='50' cy='82' rx='38' ry='8'/%3E%3Crect x='30' y='34' width='40' height='46' rx='10'/%3E%3Ccircle cx='50' cy='30' r='16'/%3E%3C/svg%3E");
+}
+
+/* Smooth theme transitions */
+html { transition: background-color .3s var(--ease-out-quart); }
+body { transition: background-color .3s var(--ease-out-quart), color .3s var(--ease-out-quart); }
+
+/* No transitions during a theme flip (Rauno). Flipping [data-theme] changes EVERY token at
+   once; letting the html/body background-color transition above (plus every component's own
+   transition) animate through that swap produces a laggy, multi-speed color smear. theme.js
+   adds `.theme-switching` to <html> for exactly one frame around the swap (removed on a
+   double-rAF, so the no-transition paint lands first) — the new palette snaps in instantly
+   and correctly. The transitions above stay intact for any other background change. */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after { transition: none !important; }
+
+/* Respect reduced motion — stop transitions and decorative motion, but keep the loading
+   spinner turning (blanking it mid-ring looks broken) and force reveals visible. The
+   `*` selector doesn't reach the ::view-transition-* pseudo tree (it's a separate tree,
+   not matched by the universal selector), so it gets its own override below.
+   Clamping animation-duration alone isn't enough: the root fade-in also carries a 90ms
+   animation-delay (from the directional-slide timing further down), and a duration clamp
+   doesn't touch delay — the result is a ~90ms blank flash before the sliver of crossfade,
+   not a kept crossfade. So delay gets clamped too, AND the root gets its own explicit,
+   clean 120ms linear crossfade (reusing the vt-fade-out/vt-fade-in keyframes) instead of
+   inheriting the directional-slide animation list at 1ms. Cross-document transitions fire
+   regardless of this media query, so this is what tames them; the same-doc
+   UI.withViewTransition path (ui.js) already no-ops entirely under reduced motion.
+   `.reveal` needs `!important` too: it's equal specificity to (and comes before, in source
+   order) the base `.reveal { opacity: 0 }` rule further down, which would otherwise win. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; }
+  /* Force the movement utilities to their visible end state (reduce movement, keep the
+     content). `.enter` rides here rather than a second @media block — the `!important`
+     end state also wins in the @starting-style before-change pass, so nothing flashes. */
+  .reveal, .enter { opacity: 1 !important; transform: none !important; }
+  .skeleton { animation: none; }   /* static shimmer is fine; spinner keeps turning as feedback */
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) {
+    animation-duration: 1ms !important; animation-delay: 0ms !important; }
+  ::view-transition-old(root) { animation: 120ms linear both vt-fade-out !important; }
+  ::view-transition-new(root) { animation: 120ms linear both vt-fade-in !important; }
+}
+
+/* Reveal-on-scroll — opt-in; app.js observes any `.reveal` element and adds `.visible`
+   the first time it enters the viewport (IntersectionObserver, with a reduced-motion
+   and no-IO fallback — see the comment above app.js's `revealEls` block). Nothing
+   moves unless you add class="reveal" to the element. */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .6s var(--ease-out-expo), transform .6s var(--ease-out-expo);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Mount entrance — the zero-JS counterpart to `.reveal`. `.reveal` fires when an element
+   scrolls INTO view (needs app.js's IntersectionObserver); `.enter` fires the moment the
+   element MOUNTS/appears, driven purely by CSS `@starting-style` — no JS, no observer.
+   Add class="enter" for a tasteful fade+rise on first paint; add style="--i:0|1|2…" on
+   siblings for a capped stagger. `@starting-style` is Chrome 117+ / Safari 17.5+ / FF 129+;
+   older browsers ignore the start state and the element just appears at its correct end
+   state (no motion — never gate correctness on it). Use sparingly — a hero, a stat strip —
+   not every card. Reduced motion is handled in the global block above (forces end state). */
+.enter {
+  transition: opacity var(--dur-base) var(--ease-out-quart),
+              transform var(--dur-base) var(--ease-out-quart);
+  transition-delay: calc(min(var(--i, 0), 8) * 40ms);   /* cap the stagger so long lists don't crawl */
+  opacity: 1;
+  transform: translateY(0);
+}
+@starting-style {
+  .enter { opacity: 0; transform: translateY(8px); }
+}
+/* Let a display/[hidden] toggle animate too, where a build reuses `.enter` for show/hide. */
+.enter[hidden], .enter.is-hidden { transition-behavior: allow-discrete; }
+
+/* Modal (app.js toggles the `open` class + aria-hidden on [data-modal] — this is the
+   display half of that contract; every prototype needs one, so it ships here rather
+   than being reinvented per-build). Prototype-specific modal content still lives in
+   each screen's HTML; this only handles show/hide + the dim backdrop + entry motion.
+   Uses visibility (not display:none) so the opacity fade actually runs both ways —
+   display:none can't be transitioned, it just snaps. The scrim is a fixed black, not
+   an --ink-derived token: --ink flips to a near-white value in dark themes, which
+   would invert the backdrop into a near-white scrim over dark surfaces. */
+[data-modal] {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: rgb(0 0 0 / .45);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--motion-fast) var(--ease-out-quart), visibility 0s linear var(--motion-fast);
+  overflow-y: auto;
+}
+[data-modal].open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity var(--motion-fast) var(--ease-out-quart), visibility 0s linear;
+}
+@media (prefers-reduced-motion: reduce) { [data-modal] { transition: none; } }
+
+/* ---- View Transitions (cross-document, default-on; degrades to instant nav) ----
+   `@view-transition { navigation: auto }` opts EVERY same-origin page-to-page navigation
+   into a smooth transition (crossfade + directional slide) with zero per-prototype work —
+   every screen links this stylesheet, so every screen opts in. Unsupported browsers
+   (Firefox, mid-2026) ignore all of this and do a plain instant navigation; nothing here
+   is load-bearing for correctness. js/vt.js (loaded non-deferred in <head>) adds the
+   optional list→detail hero morph on top.
+
+   The same ::view-transition-*(root) pseudos are ALSO produced by the opt-in same-document
+   transition (UI.withViewTransition in ui.js — tab/filter/persona swaps), so the look below
+   covers both. Reduced motion is handled in the @media block higher up (clamps VT to ~1ms:
+   drops the slide + hero fly, keeps the fade). */
+@view-transition { navigation: auto; }
+
+/* Chrome isolation — persistent chrome gets its own name so its snapshot is lifted out of
+   the root and holds still (doesn't slide/fade) across navigations: the #1 "VT bolted on
+   wrong" tell. Two elements can't share one active name, so header and the control bar get
+   DISTINCT names (index.html sets the same two names inline as a visible builder hook).
+   Scoped to `body > header` — the direct top-level header only, NOT bare `header` — so this
+   doesn't also match an unrelated `<header>` elsewhere in the page (the feedback overlay's
+   injected panel has its own `<header>`, and a builder's `<article><header>` would too).
+   Two elements can't share one active view-transition-name; if a second `header` on the
+   page picked this up, the whole transition would abort. */
+body > header   { view-transition-name: app-header; }
+#proto-controls { view-transition-name: app-controls; }
+
+/* Directional root slide (upgrade from the default crossfade) — old page fades fast + drifts
+   left; new page fades in + settles from the right. */
+::view-transition-old(root){ animation: 90ms cubic-bezier(.4,0,1,1) both vt-fade-out, 300ms var(--ease-out-quart, cubic-bezier(.23,1,.32,1)) both vt-slide-out; }
+::view-transition-new(root){ animation: 210ms cubic-bezier(0,0,.2,1) 90ms both vt-fade-in, 300ms var(--ease-out-quart, cubic-bezier(.23,1,.32,1)) both vt-slide-in; }
+@keyframes vt-fade-out{ to{opacity:0} } @keyframes vt-fade-in{ from{opacity:0} }
+@keyframes vt-slide-out{ to{transform:translateX(-2%)} } @keyframes vt-slide-in{ from{transform:translateX(2%)} }
+
+/* Same-document swaps (ui.js UI.withViewTransition — tab/filter/persona swaps) must
+   crossfade, not inherit the directional page-nav slide above: both produce the same
+   ::view-transition-*(root) pseudos, so without this override a same-doc swap would slide
+   sideways like a page navigation, which reads wrong for an in-place UI update. Scoped
+   with a root class — not view-transition `types` — because cross-browser support for
+   `types` is too uneven to rely on yet; ui.js adds `.vt-same-doc` to <html> only for the
+   lifetime of the transition, then removes it. */
+:root.vt-same-doc::view-transition-old(root){ animation:150ms var(--ease-out-quart) both vt-fade-out; }
+:root.vt-same-doc::view-transition-new(root){ animation:150ms var(--ease-out-quart) both vt-fade-in; }
+:root.vt-same-doc::view-transition-image-pair(root){ border-radius:0; }
+
+/* list→detail hero morph — inert until the builder adds the data-attrs (data-vt-item /
+   data-vt-detail + data-vt-hero) AND vt.js names the clicked hero `hero-<id>` on nav (only
+   the clicked one). The `*` matches every named group incl. root/header/controls; those
+   three get a `border-radius:0` exclusion below (a rounded corner briefly clipping the
+   header/control-bar chrome into a "notch" every navigation reads as a bug, not a morph) —
+   the rounding here is meant for actual hero-<id> morphs only. */
+::view-transition-group(*){ animation-duration:.35s; animation-timing-function:cubic-bezier(.2,0,0,1); }
+::view-transition-image-pair(*){ border-radius:var(--radius,12px); overflow:clip; }
+::view-transition-old(*), ::view-transition-new(*){ object-fit:cover; }   /* kills the aspect-ratio "taffy" stretch on the morphing image */
+::view-transition-image-pair(root),
+::view-transition-image-pair(app-header),
+::view-transition-image-pair(app-controls){ border-radius:0; }
+
+/* ---- Motion tiers — html[data-motion="calm|standard|expressive"] (default standard) ----
+   Gate motion INTENSITY by context: a dense dashboard with cinematic morphs is friction; a
+   landing page with only a crossfade under-delivers. The skill DECIDES the tier from register
+   + tone + screen types and records it in DESIGN.md (reference/discovery.md → "Motion tier");
+   js/motion.js applies it on <html> (set pre-paint by the anti-FOUC script so the incoming
+   page's transition CSS resolves correctly) and the control bar demos it.
+
+   `standard` is the default and adds NOTHING here — it's every VT / .enter / .reveal rule
+   above, unmodified. `calm` strips motion down to feedback-only; `expressive` dials entrances
+   up a touch. The global prefers-reduced-motion block higher up wins over ALL tiers (including
+   expressive): its !important VT + `.reveal, .enter` overrides beat these non-important rules,
+   and expressive's scroll-driven reveal is gated behind `prefers-reduced-motion: no-preference`
+   so it never applies under reduced motion at all. */
+
+/* calm — dense tools/dashboards. Root nav transition = a fast crossfade ONLY: drop the
+   directional vt-slide-* (keep a short ~130ms fade). vt.js also early-returns the list→detail
+   hero morph under calm, so only the root crossfade remains. Higher specificity than the bare
+   `::view-transition-*(root)` defaults, so it wins; still non-!important, so reduced motion wins. */
+html[data-motion="calm"]::view-transition-old(root){ animation: 130ms linear both vt-fade-out; }
+html[data-motion="calm"]::view-transition-new(root){ animation: 130ms linear both vt-fade-in; }
+
+/* calm — .enter and .reveal render at their visible end-state instantly: no entrance animation,
+   no scroll-driven effect (app.js also short-circuits the reveal observer under calm). The
+   :active press, hover, and focus micro-interactions are deliberately NOT touched — those are
+   feedback, not friction. (Loading/Speed is a SEPARATE control; untouched here.) */
+
+/* calm — .enter: neutralize only the ENTRANCE, not the whole transition. A blanket
+   `transition: none` here would also kill any LATER state change that reuses .enter's own
+   opacity/transform transition (e.g. a hover/press effect on an element that also carries
+   .enter) — that element would snap instead of ease, eroding the "micro-interactions kept"
+   promise above. So `transition` itself is left alone (still the base .enter rule's
+   var(--dur-base) var(--ease-out-quart)); only `transition-delay` is zeroed (disarms the
+   stagger) and this @starting-style pins the "before mount" values to the SAME as the
+   end-state (opacity:1, transform:none) instead of the global @starting-style's opacity:0 /
+   translateY(8px). Start === end means there's nothing for the transition to interpolate at
+   mount, so the element still renders at its end-state instantly — but the transition stays
+   armed for whatever comes after. */
+html[data-motion="calm"] .enter {
+  transition-delay: 0s;
+}
+@starting-style {
+  html[data-motion="calm"] .enter { opacity: 1; transform: none; }
+}
+
+/* calm — .reveal: this blanket `transition: none` stays (unlike .enter above). .reveal has no
+   hover/press use, and killing its transition is load-bearing against a pre-JS fade — it must
+   snap to its visible end-state the instant `.visible` is added (by app.js, or the
+   reduced-motion/no-IO fallback), with no lingering transition to fight. */
+html[data-motion="calm"] .reveal {
+  transition: none;
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+/* expressive — marketing/landing/pitch. Everything standard does, PLUS a --spring easing and a
+   slightly richer distance/duration on .enter (the key mount entrance). The @starting-style
+   override outranks the base one by specificity. Reduced motion still neutralizes it (the global
+   block clamps transition-duration + forces the end state, so the spring curve never runs). */
+html[data-motion="expressive"] .enter {
+  transition: opacity var(--dur-slow) var(--spring),
+              transform var(--dur-slow) var(--spring);
+  /* the shorthand above resets transition-delay to 0 — re-declare it after, or the staggered
+     entrance (style="--i:0|1|2…") collapses and every sibling mounts simultaneously. */
+  transition-delay: calc(min(var(--i, 0), 8) * 40ms);
+}
+@starting-style {
+  html[data-motion="expressive"] .enter { opacity: 0; transform: translateY(14px); }
+}
+
+/* expressive — .reveal upgraded to scroll-driven where supported. Gated on BOTH
+   prefers-reduced-motion: no-preference (reduced motion never gets it — the global block forces
+   .reveal visible) AND @supports (animation-timeline: view()); everywhere else .reveal keeps its
+   plain IntersectionObserver-driven transition (rules above).
+   No `opacity: 0` declared here — that's deliberate, not an oversight. When the ViewTimeline is
+   ACTIVE, the `reveal-scroll` animation's `both` fill mode already owns the hidden pre-entry
+   state (the `from` keyframe holds opacity 0 until the entry range is reached), so redeclaring
+   it would be redundant. But the timeline can be INACTIVE — no scrollable overflow on the page,
+   or an `overflow: hidden` ancestor breaks it — in which case the animation never actually
+   applies. If `opacity: 0` were set directly on this higher-specificity selector, it would beat
+   the base `.reveal.visible { opacity: 1 }` rule forever and the content would be stuck
+   invisible. Without it, an inactive timeline falls through to the plain cascade: base
+   `.reveal { opacity: 0 }` + `.reveal.visible { opacity: 1 }`, with app.js's
+   IntersectionObserver (still running under expressive) as the working safety net that flips
+   `.visible`. `transition: none` here means that fallback reveal snaps instead of easing —
+   an acceptable trade for never getting stuck invisible. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    html[data-motion="expressive"] .reveal {
+      transform: none;                 /* the keyframes own transform now */
+      transition: none;                /* the scroll timeline drives it, not the transition */
+      animation: reveal-scroll linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+  }
+}
+@keyframes reveal-scroll {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Toast (state.js + ui.js use this) */
+.proto-toast {
+  position: fixed;
+  bottom: 5rem;
+  left: 50%;
+  transform: translate(-50%, 8px);
+  z-index: var(--z-toast);
+  padding: .55rem 1rem;
+  border-radius: 999px;
+  background: rgb(var(--ink));
+  color: rgb(var(--surface));
+  border: 1px solid rgb(var(--ink));
+  font-size: .8rem;
+  opacity: 0;
+  transition: opacity .2s var(--ease-out-quart), transform .2s var(--ease-out-quart);
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: 90vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.proto-toast.visible { opacity: 1; transform: translate(-50%, 0); }
+.proto-toast.is-error   { background: rgb(190 60 60); border-color: rgb(190 60 60); color: rgb(255 248 245); }
+.proto-toast.is-success { background: rgb(40 120 80); border-color: rgb(40 120 80); color: rgb(245 255 250); }
+
+/* Undo-toast variant (ui.js's UI.undoToast) — the base rule above truncates the
+   *whole* toast with a single-line ellipsis, which would clip the trailing Undo
+   button off a long message. Here the container becomes a flex row instead: the
+   message (.proto-toast-msg) truncates on its own and the button never shrinks.
+   Gated on :has(.proto-toast-undo), not just the .has-undo class, so this layout
+   only ever applies while a real Undo button is actually present — state.js has
+   its own `.proto-toast`-reusing toast() that ui.js can't reach to keep in sync,
+   and this keeps a stale `.has-undo` class from mis-laying-out its plain toasts. */
+.proto-toast.has-undo:has(.proto-toast-undo) {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .75em;
+  white-space: normal; /* the message span below owns truncation now, not this container */
+}
+.proto-toast-msg {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0; /* let the flex item shrink below its content size so ellipsis can apply */
+}
+.proto-toast-undo {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  color: inherit;
+  cursor: pointer;
+  /* .proto-toast itself stays pointer-events:none (click-through at rest) —
+     this control opts back in so it alone can be clicked. */
+  pointer-events: auto;
+}
+
+/* Loading button (ui.js toggles .is-loading) */
+.is-loading { opacity: .75; cursor: wait; }
+.is-loading::after {
+  content: "";
+  display: inline-block;
+  width: .7em; height: .7em;
+  margin-left: .4em;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 999px;
+  vertical-align: -.1em;
+  animation: proto-spin .6s linear infinite;
+}
+@keyframes proto-spin { to { transform: rotate(360deg); } }
+
+/* Persona show/hide — beats Tailwind display utilities like `.flex` */
+.proto-hidden { display: none !important; }
+
+/* Skeleton loaders — placeholder silhouettes during fake loads */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--muted) / .18) 25%,
+    rgb(var(--muted) / .32) 50%,
+    rgb(var(--muted) / .18) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius);
+  color: transparent;
+  user-select: none;
+  display: block;
+}
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skeleton.is-text    { height: .8em;  margin: .35em 0; border-radius: 3px; }
+.skeleton.is-text-lg { height: 1.2em; margin: .35em 0; border-radius: 3px; }
+.skeleton.is-block   { aspect-ratio: 5 / 4; width: 100%; }
+.skeleton.is-circle  { border-radius: 999px; aspect-ratio: 1 / 1; }
+.skeleton-item { pointer-events: none; }
+
+/* Empty state wrapper */
+.empty-state {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  border: 1px dashed rgb(var(--muted) / .4);
+  border-radius: var(--radius);
+  color: rgb(var(--ink2));
+}
+.empty-state h3 {
+  color: rgb(var(--ink));
+  font-family: inherit;   /* inherits body; add class="font-heading" in markup for the display face */
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin-bottom: .5rem;
+}
+.empty-state p { margin: 0 auto; max-width: 32rem; }
+.empty-state .actions { margin-top: 1.25rem; display: inline-flex; gap: .5rem; }
+
+/* Skip link — the first tabbable element on the page, visually hidden until focused.
+   Without it a keyboard user tabs the whole nav again on every screen. */
+.proto-skip {
+  position: absolute;
+  left: .75rem;
+  top: -3rem;
+  z-index: var(--z-sticky);
+  padding: .5rem .875rem;
+  border-radius: var(--radius);
+  background: rgb(var(--accent));
+  color: rgb(var(--accent-ink));
+  font-size: .875rem;
+  text-decoration: none;
+  transition: top .15s ease;
+}
+.proto-skip:focus { top: .75rem; }
+
+/* Screen-reader-only — visually hidden but read aloud. Powers the shared polite
+   live region (`.proto-status`, created lazily by ui.js's UI.announce) that every
+   loader speaks "Loading…" / "Loaded." through. Also usable on any visually-implicit
+   label a build needs announced. */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* State matrix component — the non-happy-path states a data region needs, as one
+   token-driven block (icon slot + title + body + one action). `.state--empty` is the
+   empty/first-run/no-results/cleared face (same spirit as `.empty-state`, which stays
+   as-is for existing builds); `.state--error` is the scoped, plain-language failure
+   face with a `[data-retry]` action. `min-height` reserves space so a region swapping
+   default → loading → empty/error doesn't shift the layout around it. Document the full
+   per-region matrix in reference/build.md → "Interaction states". */
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 12rem;               /* reserve space — appearing must not shift layout */
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  border: 1px dashed rgb(var(--muted) / .4);
+  border-radius: var(--radius);
+  color: rgb(var(--ink2));
+}
+.state .state-icon {
+  display: inline-flex;
+  width: 2.25rem; height: 2.25rem;
+  color: rgb(var(--ink3));
+}
+.state .state-icon > svg { width: 100%; height: 100%; }
+.state .state-title {
+  color: rgb(var(--ink));
+  font-family: inherit;            /* add class="font-heading" in markup for the display face */
+  font-weight: 500;
+  font-size: 1.25rem;
+}
+.state .state-body { margin: 0 auto; max-width: 32rem; }
+.state .state-actions { margin-top: .25rem; display: inline-flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+
+/* Error face — tint the border + icon with the same --status-error token .proto-toast
+   and .form-field already use, so a theme swap carries it. Keep the copy plain-language
+   and scoped to the region; the [data-retry] button re-runs the failed call (a build
+   wires it to re-fetch and preserve any user input — see reference/build.md). */
+.state--error { border-color: rgb(var(--status-error) / .45); }
+.state--error .state-icon { color: rgb(var(--status-error)); }
+
+/* Visible control bar — all options shown inline, no click-to-reveal.
+   Positioned bottom-center so it's discoverable and doesn't fight sidebars. */
+#proto-controls {
+  position: fixed;
+  bottom: .9rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-sticky);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .25rem;
+  pointer-events: none;
+}
+/* Reserve space so the fixed control bar never occludes the last row of content.
+   The clearance is a token so app-shell layouts (which scroll an inner <main> and so
+   DON'T inherit body's padding) can reserve the same space — see `.proto-app-shell`. */
+:root { --proto-controls-safe: calc(4.75rem + env(safe-area-inset-bottom, 0px)); }
+body { padding-bottom: var(--proto-controls-safe); }
+
+/* App-shell helper — a full-viewport shell whose inner <main> scrolls, with a top bar
+   and (optionally) a pinned footer/composer. It reserves control-bar clearance so the
+   pinned bottom element never hides under the floating #proto-controls. Structure:
+     <div class="proto-app-shell"> <header>…</header> <main>…scrolls…</main> <footer>…pinned…</footer> </div>
+   `100dvh` (not vh) so mobile browser chrome doesn't clip it. */
+.proto-app-shell { height: 100vh; height: 100dvh; display: flex; flex-direction: column;
+  padding-bottom: var(--proto-controls-safe); box-sizing: border-box; }
+.proto-app-shell > * { min-height: 0; }              /* let the flex child actually scroll */
+.proto-app-shell > main, .proto-app-shell > .proto-shell-main { flex: 1; overflow: auto; min-height: 0; }
+
+#proto-controls > .proto-bar {
+  display: flex;
+  flex-wrap: nowrap;                /* never wrap — graceful scroll instead */
+  align-items: center;
+  gap: .5rem;
+  padding: .35rem .5rem;
+  border-radius: 999px;
+  background: rgb(var(--elevated) / .95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgb(var(--muted) / .3);
+  box-shadow: var(--shadow-lg);
+  font-size: .72rem;
+  color: rgb(var(--ink2));
+  pointer-events: auto;
+  max-width: calc(100vw - 2rem);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#proto-controls > .proto-bar::-webkit-scrollbar { display: none; }
+#proto-controls .proto-bar-section {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: 0 .25rem;
+  flex-shrink: 0;
+}
+#proto-controls .proto-bar-section + .proto-bar-section {
+  border-left: 1px solid rgb(var(--muted) / .3);
+  padding-left: .6rem;
+}
+#proto-controls .proto-bar-label {
+  color: rgb(var(--ink2));
+  white-space: nowrap;
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+/* Hide uppercase section labels on medium-width screens to keep single-line. */
+@media (max-width: 960px) {
+  #proto-controls .proto-bar-label { display: none; }
+}
+#proto-controls .proto-hint {
+  font-size: .65rem;
+  color: rgb(var(--ink2));
+  opacity: .7;
+  text-align: center;
+  pointer-events: none;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  background: rgb(var(--elevated) / .85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+@media (max-width: 960px) {
+  #proto-controls .proto-hint { display: none; }
+}
+
+/* Control-bar collapse (js/ui.js). The bar loads open; a viewer can tuck it into a corner
+   chevron. State lives on <html data-controls="hidden">, set before first paint, never in the URL. */
+#proto-controls .proto-collapse,
+#proto-controls .proto-reveal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: rgb(var(--ink2));
+  cursor: pointer;
+}
+#proto-controls .proto-collapse {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+}
+#proto-controls .proto-reveal {
+  display: none;
+  pointer-events: auto;
+  width: 2.75rem;                 /* 44px touch target */
+  height: 2.75rem;
+  border-radius: 999px;
+  background: rgb(var(--elevated) / .95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgb(var(--muted) / .3);
+  box-shadow: var(--shadow-lg);
+}
+@media (hover: hover) {
+  #proto-controls .proto-collapse:hover,
+  #proto-controls .proto-reveal:hover { color: rgb(var(--ink)); }
+  #proto-controls .proto-collapse:hover { background: rgb(var(--muted) / .2); }
+}
+html[data-controls="hidden"] #proto-controls { left: .9rem; transform: none; align-items: flex-start; }
+html[data-controls="hidden"] #proto-controls > .proto-bar,
+html[data-controls="hidden"] #proto-controls .proto-hint { display: none; }
+html[data-controls="hidden"] #proto-controls .proto-reveal { display: inline-flex; }
+
+/* Segmented control: group + options */
+.proto-seg-group {
+  display: inline-flex;
+  background: rgb(var(--muted) / .2);
+  border-radius: 999px;
+  padding: 2px;
+  gap: 1px;
+}
+.proto-seg {
+  padding: .3rem .7rem;
+  border-radius: 999px;
+  font-size: .7rem;
+  color: rgb(var(--ink2));
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: background .15s var(--ease-out-quart), color .15s var(--ease-out-quart);
+  font: inherit;
+  white-space: nowrap;
+  line-height: 1;
+}
+.proto-seg:hover {
+  color: rgb(var(--ink));
+  background: rgb(var(--muted) / .15);
+}
+.proto-seg[aria-pressed="true"] {
+  background: rgb(var(--ink));
+  color: rgb(var(--surface));
+  font-weight: 500;
+}
+
+/* Wide content (data tables especially) scrolls inside this wrapper instead of
+   pushing the whole page wider than the viewport. Wrap every <table> in one. */
+.proto-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.proto-table-wrap > table { min-width: max-content; }
+
+/* Action / filter / toolbar rows: wrap to the next line on narrow screens rather
+   than overflowing horizontally. Apply to header button clusters and filter chips. */
+.proto-actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+
+/* Layout system — `.proto-grid` responds to data-layout on <html>.
+   Mobile: always 1 col. Tablet: 2. Desktop: 2 or 3 depending on layout. */
+.proto-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+@media (min-width: 640px) {
+  .proto-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  html[data-layout="2col"] .proto-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  html[data-layout="3col"] .proto-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Mobile — with nowrap + overflow-x auto, bar scrolls horizontally.
+   Stays single-row for consistency across all viewports. */
+
+/* History drawer (Shift+?) */
+.proto-history {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  z-index: var(--z-modal);
+  width: min(22rem, calc(100vw - 2rem));
+  max-height: 60vh;
+  overflow: auto;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgb(var(--elevated));
+  border: 1px solid rgb(var(--muted) / .2);
+  box-shadow: var(--shadow-lg);
+  display: none;
+}
+.proto-history.visible { display: block; }
+.proto-history h3 { font-weight: 600; margin-bottom: .5rem; }
+.proto-history ol { font-size: .85rem; color: rgb(var(--ink2)); }
+.proto-history li { padding: .25rem 0; }
+.proto-history a { color: rgb(var(--ink)); text-decoration: none; }
+.proto-history a:hover { color: rgb(var(--accent)); }
+
+
+/* ===================================================================
+   kurenn.dev / index — product styles (Swiss minimal; see DESIGN.md)
+   =================================================================== */
+body { font-family: 'Instrument Sans', system-ui, sans-serif; font-variant-numeric: tabular-nums; font-size: 1rem; line-height: 1.5; }
+.wrap { width: 100%; max-width: 1360px; margin-inline: auto; padding-inline: 40px; }
+@media (max-width: 640px) { .wrap { padding-inline: 20px; } }
+.g12 { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; }
+.meta { font-size: 12px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: rgb(var(--ink3)); }
+.meta-row { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; color: rgb(var(--ink3)); }
+.text-link { color: rgb(var(--ink)); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgb(var(--ink) / .35); transition: text-decoration-color var(--dur-fast) var(--ease-out-quart); }
+@media (hover: hover) { .text-link:hover { text-decoration-color: rgb(var(--ink)); } }
+.btn { display: inline-flex; align-items: center; gap: 10px; background: rgb(var(--accent)); color: rgb(var(--accent-ink)); font-weight: 500; padding: 13px 22px; transition: opacity var(--dur-fast) var(--ease-out-quart); }
+@media (hover: hover) { .btn:hover { opacity: .86; } }
+.status { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: rgb(var(--ink2)); }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: rgb(var(--ink)); flex: none; }
+.status[data-status="building"]::before { background: transparent; box-shadow: inset 0 0 0 1.25px rgb(var(--ink)); }
+
+/* Top row + section line */
+.top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 32px; padding-block: 28px; }
+.top .name { font-weight: 600; }
+.sections { display: flex; flex-wrap: wrap; gap: 4px 28px; font-size: 14px; }
+.sections a { color: rgb(var(--ink2)); padding-block: 4px; }
+.sections a span { color: rgb(var(--ink3)); margin-right: 6px; font-size: 12px; }
+.sections a[aria-current="page"] { color: rgb(var(--ink)); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+@media (hover: hover) { .sections a:hover { color: rgb(var(--ink)); } }
+
+/* Home */
+.home { min-height: calc(100dvh - var(--proto-controls-safe)); display: flex; flex-direction: column; }
+.home main { flex: 1; display: flex; align-items: center; }
+.stage { width: 100%; align-items: center; padding-block: 16px; }
+.ix-list { grid-column: 1 / 8; list-style: none; margin: 0; padding: 0; }
+.ix { display: flex; align-items: flex-start; gap: 14px; color: rgb(var(--ink)); transition: color var(--dur-fast) var(--ease-out-quart); }
+.ix-n { font-size: 13px; font-weight: 500; color: rgb(var(--ink3)); padding-top: .9em; min-width: 1.6em; }
+.ix-name { font-size: clamp(2.25rem, min(5.4vw, 10vh), 5.75rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.04; white-space: nowrap; }
+.ix-promise { display: none; }
+.ix-list:hover .ix:not(:hover), .ix-list:focus-within .ix:not(:focus-visible):not(:hover) { color: rgb(var(--ink3)); }
+.ix-list:hover .ix:hover, .ix.is-current { color: rgb(var(--ink)); }
+.panes { grid-column: 9 / 13; display: grid; align-self: center; }
+.pane { grid-area: 1 / 1; display: flex; flex-direction: column; align-items: flex-start; gap: 18px; opacity: 0; visibility: hidden; transition: opacity var(--dur-fast) var(--ease-out-quart), visibility 0s linear var(--dur-fast); }
+.pane.is-active { opacity: 1; visibility: visible; transition: opacity var(--dur-base) var(--ease-out-quart), visibility 0s; }
+.pane-title { font-size: clamp(1.8rem, 2.6vw, 2.5rem); font-weight: 500; letter-spacing: -.02em; line-height: 1.12; text-wrap: balance; }
+.pane-body { color: rgb(var(--ink2)); max-width: 30em; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; padding-top: 6px; }
+.belief-top { display: none; }
+.home-foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 28px; padding-block: 24px; font-size: 13px; color: rgb(var(--ink3)); }
+.home-foot nav { display: flex; gap: 20px; }
+.home-foot a { color: rgb(var(--ink2)); }
+@media (hover: hover) { .home-foot a:hover { color: rgb(var(--ink)); } }
+
+/* list layout (and every narrow screen): belief on top, promises inline, no pane */
+html[data-layout="list"] .panes { display: none; }
+html[data-layout="list"] .belief-top { display: flex; }
+html[data-layout="list"] .stage { align-items: start; row-gap: 56px; padding-block: 48px; }
+html[data-layout="list"] .ix-list { grid-column: 1 / -1; border-top: 1px solid rgb(var(--hairline)); }
+html[data-layout="list"] .ix-list li { border-bottom: 1px solid rgb(var(--hairline)); }
+html[data-layout="list"] .ix { display: grid; grid-template-columns: 3rem minmax(0, 5fr) minmax(0, 6fr); align-items: baseline; padding-block: 18px; }
+html[data-layout="list"] .ix-n { padding-top: 0; }
+html[data-layout="list"] .ix-name { font-size: clamp(1.6rem, 2.6vw, 2.4rem); }
+html[data-layout="list"] .ix-promise { display: block; color: rgb(var(--ink2)); }
+.belief-top { grid-column: 1 / 9; flex-direction: column; align-items: flex-start; gap: 20px; }
+@media (max-width: 960px) {
+  .panes { display: none; }
+  .belief-top { display: flex; grid-column: 1 / -1; }
+  .stage { align-items: start; row-gap: 48px; padding-block: 32px; }
+  .ix-list { grid-column: 1 / -1; border-top: 1px solid rgb(var(--hairline)); }
+  .ix-list li { border-bottom: 1px solid rgb(var(--hairline)); }
+  .ix { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); align-items: baseline; padding-block: 16px; row-gap: 4px; }
+  .ix-n { padding-top: 0; }
+  .ix-name { font-size: 1.9rem; white-space: normal; }
+  .ix-promise { display: block; grid-column: 2; color: rgb(var(--ink2)); font-size: 15px; }
+  html[data-layout="list"] .ix { grid-template-columns: 2.25rem minmax(0, 1fr); }
+}
+.belief-title { font-size: clamp(2.2rem, 4.4vw, 4rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.02; text-wrap: balance; max-width: 16ch; }
+.lead { font-size: 1.125rem; color: rgb(var(--ink2)); max-width: 34em; }
+
+/* Page intro */
+.intro { padding-block: 112px 88px; row-gap: 28px; }
+.intro > * { grid-column: 1 / 10; }
+.intro h1 { font-size: clamp(2.4rem, 4.6vw, 4.25rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.03; text-wrap: balance; }
+@media (max-width: 640px) { .intro { padding-block: 56px 48px; } .intro > * { grid-column: 1 / -1; } }
+
+/* Manifesto */
+.m-wrap { padding-block: 96px 128px; }
+.m-toc { grid-column: 1 / 4; align-self: start; position: sticky; top: 32px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+.m-toc a { color: rgb(var(--ink3)); display: grid; grid-template-columns: 2rem 1fr; }
+.m-toc a.is-current { color: rgb(var(--ink)); }
+@media (hover: hover) { .m-toc a:hover { color: rgb(var(--ink)); } }
+.m-col { grid-column: 4 / 11; }
+.m-head { display: flex; flex-direction: column; gap: 22px; padding-bottom: 72px; }
+.m-title { font-size: clamp(2.3rem, 4vw, 3.6rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.04; text-wrap: balance; }
+.m-section { display: grid; grid-template-columns: 3rem minmax(0, 1fr); padding-block: 48px; border-top: 1px solid rgb(var(--hairline)); scroll-margin-top: 80px; }
+.m-idx { font-size: 13px; color: rgb(var(--ink3)); padding-top: .45em; }
+.m-section h2 { font-size: 1.5rem; font-weight: 500; letter-spacing: -.015em; line-height: 1.2; margin-bottom: 16px; }
+.prose { max-width: 36rem; }
+.prose p { font-size: 1.125rem; line-height: 1.7; color: rgb(var(--ink2)); }
+.prose p + p { margin-top: 16px; }
+.m-closing { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; border-top: 1px solid rgb(var(--hairline)); padding-top: 64px; }
+.m-closing blockquote { font-size: clamp(1.6rem, 2.6vw, 2.25rem); font-weight: 500; letter-spacing: -.025em; line-height: 1.15; max-width: 24ch; }
+.resume { padding-bottom: 32px; }
+@media (max-width: 960px) { .m-toc { display: none; } .m-col { grid-column: 1 / -1; } .m-wrap { padding-block: 48px 80px; } }
+@media (max-width: 640px) { .m-section { grid-template-columns: 1fr; row-gap: 8px; padding-block: 36px; } }
+.page-progress { position: fixed; top: 0; left: 0; height: 1px; background: rgb(var(--ink)); width: 0; z-index: var(--z-sticky); }
+
+/* Manifesto overlay (full-screen surface, not a scrim) */
+[data-modal="manifesto"] { padding: 0; align-items: stretch; justify-content: stretch; background: rgb(var(--surface)); }
+.overlay { position: relative; width: 100%; height: 100%; overflow-y: auto; overscroll-behavior: contain; }
+.overlay-bar { position: sticky; top: 0; z-index: 1; background: rgb(var(--surface)); }
+.overlay-bar .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 20px; }
+.overlay-bar button { font: inherit; color: rgb(var(--ink)); padding: 8px 0; }
+.progress { position: absolute; left: 0; bottom: 0; height: 1px; background: rgb(var(--ink)); width: 0; }
+.overlay .m-wrap { padding-bottom: calc(128px + var(--proto-controls-safe)); }
+
+/* Projects */
+.project { padding-block: 72px; border-top: 1px solid rgb(var(--hairline)); scroll-margin-top: 24px; row-gap: 20px; }
+.p-n { grid-column: 1 / 2; padding-top: .6em; }
+.p-name { grid-column: 2 / 5; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.p-name h2 { font-size: 1.25rem; font-weight: 600; }
+.p-main { grid-column: 5 / 13; display: flex; flex-direction: column; align-items: flex-start; gap: 24px; }
+.p-promise { font-size: clamp(1.9rem, 3.2vw, 2.9rem); font-weight: 500; letter-spacing: -.03em; line-height: 1.06; text-wrap: balance; }
+.p-body { font-size: 1.125rem; line-height: 1.65; color: rgb(var(--ink2)); max-width: 36em; }
+.kv { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 8px 24px; font-size: 14px; width: 100%; max-width: 36em; padding-top: 4px; }
+.kv dt { color: rgb(var(--ink3)); }
+.kv dd { color: rgb(var(--ink)); overflow-wrap: anywhere; }
+html[data-layout="list"] .project { padding-block: 40px; }
+html[data-layout="list"] .p-promise { font-size: 1.5rem; }
+html[data-layout="list"] .p-body, html[data-layout="list"] .kv { display: none; }
+@media (max-width: 860px) {
+  .p-n { grid-column: 1 / -1; padding-top: 0; }
+  .p-name, .p-main { grid-column: 1 / -1; }
+  .project { padding-block: 48px; }
+}
+.closing { border-top: 1px solid rgb(var(--hairline)); padding-block: 88px 120px; row-gap: 24px; }
+.closing > * { grid-column: 1 / 9; }
+.closing p { font-size: clamp(1.6rem, 2.6vw, 2.25rem); font-weight: 500; letter-spacing: -.025em; line-height: 1.15; }
+@media (max-width: 640px) { .closing > * { grid-column: 1 / -1; } }
+
+/* Open source */
+.os { padding-block: 64px; border-top: 1px solid rgb(var(--hairline)); row-gap: 28px; }
+.os > h2 { grid-column: 1 / 4; font-size: 1.125rem; font-weight: 600; }
+.os > .os-body { grid-column: 4 / 13; min-width: 0; }
+@media (max-width: 860px) { .os > h2, .os > .os-body { grid-column: 1 / -1; } }
+.rows { list-style: none; margin: 0; padding: 0; }
+.row { padding-block: 20px; border-bottom: 1px solid rgb(var(--hairline)); row-gap: 10px; }
+.row:first-child { border-top: 1px solid rgb(var(--hairline)); }
+.row .r-name { grid-column: 1 / 4; font-weight: 600; }
+.row .r-desc { grid-column: 4 / 10; color: rgb(var(--ink2)); display: flex; flex-direction: column; gap: 8px; }
+.row .r-links { grid-column: 10 / 13; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: flex-end; }
+@media (max-width: 860px) { .row .r-name, .row .r-desc, .row .r-links { grid-column: 1 / -1; justify-content: flex-start; } }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+.search { font: inherit; font-size: 15px; background: transparent; border: 0; border-bottom: 1px solid rgb(var(--hairline)); padding: 8px 0; width: 16rem; max-width: 100%; color: rgb(var(--ink)); border-radius: 0; }
+.search:focus { outline: none; border-bottom-color: rgb(var(--ink)); }
+.search::placeholder { color: rgb(var(--ink3)); }
+.filters { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.filter { font: inherit; font-size: 14px; color: rgb(var(--ink3)); padding: 6px 0; }
+.filter.is-active { color: rgb(var(--ink)); text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+@media (hover: hover) { .filter:hover { color: rgb(var(--ink)); } }
+.count { font-size: 13px; color: rgb(var(--ink3)); font-weight: 400; margin-left: 8px; }
+.repo-list { list-style: none; margin: 0; padding: 0; min-height: 24rem; border-top: 1px solid rgb(var(--hairline)); }
+.repo-item a { display: grid; grid-template-columns: minmax(9rem, 3fr) minmax(0, 6fr) 6rem 3.5rem 6.5rem; gap: 20px; align-items: baseline; padding: 14px 0; border-bottom: 1px solid rgb(var(--hairline)); transition: color var(--dur-fast) var(--ease-out-quart); }
+.repo-item .r-name { font-weight: 600; }
+.repo-item .r-desc { color: rgb(var(--ink2)); font-size: 14px; }
+.repo-item .r-meta { font-size: 13px; color: rgb(var(--ink3)); }
+.repo-item .r-meta:last-child { text-align: right; }
+@media (hover: hover) { .repo-list:hover .repo-item a:not(:hover) .r-name { color: rgb(var(--ink3)); } }
+@media (max-width: 860px) {
+  .repo-item a { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
+  .repo-item .r-desc { grid-column: 1 / -1; grid-row: 2; }
+  .repo-item .r-lang, .repo-item .r-pushed { display: none; }
+}
+html[data-layout="list"] .repo-item .r-desc { display: none; }
+.state { min-height: 24rem; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; }
+.state-title { font-size: 1.25rem; font-weight: 500; }
+.state-body { color: rgb(var(--ink2)); max-width: 32em; }
+.state--error .state-title { color: rgb(var(--status-error)); }
+.links-list { list-style: none; margin: 0; padding: 0; }
+.links-list a { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) 1.5rem; gap: 8px 24px; align-items: baseline; padding-block: 18px; border-bottom: 1px solid rgb(var(--hairline)); }
+.links-list li:first-child a { border-top: 1px solid rgb(var(--hairline)); }
+.links-list strong { font-weight: 600; }
+.links-list span { color: rgb(var(--ink2)); }
+.links-list i { font-style: normal; color: rgb(var(--ink3)); text-align: right; }
+@media (hover: hover) { .links-list a:hover i { color: rgb(var(--ink)); } }
+@media (max-width: 640px) { .links-list a { grid-template-columns: minmax(0, 1fr) 1.5rem; } .links-list span { grid-column: 1; grid-row: 2; } .links-list i { grid-row: 1; grid-column: 2; } }
+
+/* Contact */
+.contact { padding-bottom: 128px; row-gap: 64px; }
+.channels { grid-column: 1 / 6; list-style: none; margin: 0; padding: 0; }
+.channels li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-block: 18px; border-bottom: 1px solid rgb(var(--hairline)); }
+.channels li:first-child { border-top: 1px solid rgb(var(--hairline)); }
+.channels .k { font-size: 13px; color: rgb(var(--ink3)); min-width: 5.5rem; }
+.channels .v { flex: 1; min-width: 0; overflow-wrap: anywhere; font-size: 1.125rem; }
+.channels button { font: inherit; font-size: 13px; color: rgb(var(--ink2)); text-decoration: underline; text-underline-offset: 4px; }
+.form-col { grid-column: 7 / 13; }
+@media (max-width: 860px) { .channels, .form-col { grid-column: 1 / -1; } }
+.form { display: flex; flex-direction: column; gap: 32px; }
+.form .form-field { display: flex; flex-direction: column; gap: 4px; }
+.form label { font-size: 13px; color: rgb(var(--ink3)); }
+.form input, .form textarea { width: 100%; background: transparent; border: 0; border-bottom: 1px solid rgb(var(--hairline)); border-radius: 0; padding: 10px 0; font: inherit; font-size: 1.125rem; color: rgb(var(--ink)); transition: border-color var(--dur-fast) var(--ease-out-quart); }
+.form textarea { min-height: 8rem; resize: vertical; line-height: 1.5; }
+.form input:focus, .form textarea:focus { outline: none; border-bottom-color: rgb(var(--ink)); }
+.form .has-error input, .form .has-error textarea { border-bottom-color: rgb(var(--status-error)); }
+.form .error { display: none; font-size: 14px; color: rgb(var(--status-error)); }
+.form .has-error .error { display: block; }
+.form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.form-foot small { font-size: 13px; color: rgb(var(--ink3)); }
+.sent { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+.sent h2 { font-size: 2rem; font-weight: 500; letter-spacing: -.025em; line-height: 1.1; }
+.sent p { color: rgb(var(--ink2)); }
+
+/* Footer (inner pages) */
+.foot { border-top: 1px solid rgb(var(--hairline)); }
+.foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 28px; padding-block: 28px; font-size: 13px; color: rgb(var(--ink3)); }
+.foot nav { display: flex; gap: 20px; }
+.foot a { color: rgb(var(--ink2)); }
+@media (hover: hover) { .foot a:hover { color: rgb(var(--ink)); } }
+
+@media (pointer: coarse) {
+  .sections a, .home-foot a, .foot a, .text-link, .filter, .channels button, .overlay-bar button, .top a { display: inline-flex; align-items: center; min-height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .pane, .pane.is-active { transition: none; } }

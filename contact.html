@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" data-theme="bone" data-layout="index" data-motion="standard">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — Abraham Kuri</title>
+  <meta name="description" content="Talk with Abraham Kuri about AI and software." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23F6F5F1'/><text x='50' y='72' text-anchor='middle' font-size='64' font-family='system-ui,sans-serif' font-weight='600' fill='%23111110'>K</text></svg>" />
+  <link rel="canonical" href="https://kurenn.dev/contact.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kurenn.dev/contact.html" />
+  <meta property="og:title" content="Contact — Abraham Kuri" />
+  <meta property="og:description" content="Talk with Abraham Kuri about AI and software." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@kurenn" />
+  <script src="js/vt.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            surface:  'rgb(var(--surface)  / <alpha-value>)',
+            elevated: 'rgb(var(--elevated) / <alpha-value>)',
+            accent:   'rgb(var(--accent)   / <alpha-value>)',
+            muted:    'rgb(var(--muted)    / <alpha-value>)',
+            ink:      'rgb(var(--ink)      / <alpha-value>)',
+            ink2:     'rgb(var(--ink2)     / <alpha-value>)',
+            ink3:        'rgb(var(--ink3)        / <alpha-value>)',
+            hairline:    'rgb(var(--hairline)    / <alpha-value>)',
+            'elevated-2':'rgb(var(--elevated-2)  / <alpha-value>)',
+            'accent-ink':'rgb(var(--accent-ink)  / <alpha-value>)',
+          },
+          fontFamily: {
+            heading: ['Instrument Sans', 'system-ui', 'sans-serif'],
+            body:    ['Instrument Sans', 'system-ui', 'sans-serif'],
+          },
+          borderRadius: { proto: 'var(--radius)' },
+        },
+      },
+    };
+  </script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="bg-surface text-ink font-body antialiased">
+  <a class="proto-skip" href="#main">Skip to content</a>
+  <header class="wrap top" style="view-transition-name: app-header">
+    <a href="index.html" class="name">Abraham Kuri</a>
+    <nav class="sections" aria-label="Primary"><a href="manifesto.html"><span>01</span>Manifesto</a><a href="projects.html"><span>02</span>Projects</a><a href="open-source.html"><span>03</span>Open source</a><a href="contact.html" aria-current="page"><span>04</span>Contact</a></nav>
+  </header>
+  <main id="main" tabindex="-1" class="wrap">
+    <section class="g12 intro" aria-labelledby="c-h">
+      <p class="meta">Contact</p>
+      <h1 id="c-h">Let’s talk about AI and software.</h1>
+      <p class="lead">I’m interested in talking with developers, operators, and people building the next generation of software and organizations.</p>
+    </section>
+    <div class="g12 contact">
+      <ul class="channels" aria-label="Elsewhere">
+        <li><span class="k">Email</span><a class="v" href="mailto:hello@kurenn.dev">hello@kurenn.dev</a><button data-copy-email data-copy-success="Copied" aria-label="Copy email address">Copy</button></li>
+        <li><span class="k">X</span><a class="v" href="https://x.com/kurenn" target="_blank" rel="noopener">@kurenn ↗</a></li>
+        <li><span class="k">GitHub</span><a class="v" href="https://github.com/kurenn" target="_blank" rel="noopener">kurenn ↗</a></li>
+        <li><span class="k">LinkedIn</span><a class="v" href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/" target="_blank" rel="noopener">Abraham Kuri Vargas ↗</a></li>
+      </ul>
+      <div class="form-col">
+        <form class="form" data-contact-form novalidate aria-label="Write to me">
+          <div class="form-field"><label for="f-name">Name</label><input id="f-name" name="name" aria-required="true" autocomplete="name" aria-describedby="e-name" /><span class="error" id="e-name"></span></div>
+          <div class="form-field"><label for="f-msg">Message</label><textarea id="f-msg" name="message" aria-required="true" aria-describedby="e-msg"></textarea><span class="error" id="e-msg"></span></div>
+          <div class="form-foot"><small>Opens your email app with this message ready to send.</small><button type="submit" class="btn">Send message →</button></div>
+        </form>
+        <div class="sent" data-sent hidden>
+          <h2 tabindex="-1">Thanks, <span data-sent-name></span>. Your email app should be open with the message.</h2>
+          <p>Nothing opened? Write to <a class="text-link" href="mailto:hello@kurenn.dev">hello@kurenn.dev</a> directly.</p>
+          <div class="actions" style="display:flex;flex-wrap:wrap;gap:24px"><a href="manifesto.html" class="text-link">Read the manifesto</a><button class="text-link" data-send-another>Send another</button></div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="foot">
+    <div class="wrap"><span>© 2026 Abraham Kuri</span><nav aria-label="Elsewhere"><a href="https://github.com/kurenn" target="_blank" rel="noopener">GitHub</a><a href="https://x.com/kurenn" target="_blank" rel="noopener">X</a><a href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/" target="_blank" rel="noopener">LinkedIn</a></nav></div>
+  </footer>
+
+  <script src="js/state.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

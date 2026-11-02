@@ -1,6 +1,6 @@
 # Abraham Kuri
 
-> Abraham Kuri builds AI agent systems and publishes the receipts — including the times he was wrong. CTO and co-founder of Coba (YC S23), original author of *APIs on Rails* (2014), shipping Ruby on Rails since 2010. Based in Mexico City.
+> Abraham Kuri believes AI will make the world better, and builds the systems that make that future practical: DevLoop, Olympus, Coba and Claude Prototype. CTO and co-founder of Coba (YC S23), original author of *APIs on Rails* (2014), shipping Ruby on Rails since 2010. Based in Mexico City.
 
 ## About
 
@@ -12,12 +12,12 @@ He is CTO and co-founder of **Coba (YC S23)**, and a **board member at Icalia La
 
 ## Pages
 
-- [Home](https://kurenn.dev/): Proof of work — the cost benchmark with full methodology, six open-source tools, the four things that didn't work, and a free guide.
+- [Home](https://kurenn.dev/): The belief, and an index of what he is building.
+- [Manifesto](https://kurenn.dev/manifesto.html): Why AI will take over the world, in a good way — the disruption, the long run, and why software is still the bottleneck.
+- [Projects](https://kurenn.dev/projects.html): DevLoop (reliable code that ships in one shot), Olympus (automate any business workflow), Coba (US–Mexico transactions), Claude Prototype (prototypes that can become real products).
+- [Open source](https://kurenn.dev/open-source.html): Public repositories and technical notes.
+- [Contact](https://kurenn.dev/contact.html): Talk about AI and software.
 - [Sprint](https://kurenn.dev/sprint/): A one-week, $5,000 flat-rate AI application sprint. One client per month.
-
-## Free guide
-
-**Doing Less, On Purpose** — a field guide on how the right Rails skills made an AI coding bill 12× smaller. Built from a controlled benchmark of two ways of using AI on ten real Rails tasks ($144.72 on the meter, every diff read by hand): a specialist-swarm that spawns a separate process per specialist, versus a triage-first system that sizes each ticket up before dispatching. The finding: 7–34× cheaper and 2–7× faster, because 69% of the swarm's bill was the orchestrator coordinating with its own specialists rather than writing code — a process-boundary problem, not a prompt problem. Closes with the four rules of a good skill: triage before dispatch, tests-first where it counts, gates on demand, receipts always. Free, available from the form at [kurenn.dev](https://kurenn.dev/).
 
 ## Open source
 
