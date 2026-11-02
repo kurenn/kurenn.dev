@@ -13,9 +13,6 @@
  *   State.set('modal', 'signup');
  */
 (function () {
-  const SESSION_KEY = (window.PROTO_NS || 'proto-') + 'history';
-  const MAX_HISTORY = 10;
-
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
       { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]
@@ -44,7 +41,6 @@
     if (value === null || value === undefined || value === '') delete current[key];
     else current[key] = String(value);
     writeParams(current);
-    pushHistory();
   }
 
   function get(key) {
