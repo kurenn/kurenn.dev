@@ -8,6 +8,7 @@
       github: 'https://github.com/kurenn',
       x: 'https://x.com/kurenn',
       linkedin: 'https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/',
+      instagram: 'https://www.instagram.com/3d.kurito/',
       email: 'kuri@coba.ai',
     },
 
