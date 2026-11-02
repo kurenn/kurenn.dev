@@ -8,7 +8,7 @@
       github: 'https://github.com/kurenn',
       x: 'https://x.com/kurenn',
       linkedin: 'https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/',
-      email: 'hello@kurenn.dev', // TODO(real): confirm the public address
+      email: 'kuri@coba.ai',
     },
 
     // Order is the brief's order: DevLoop first (speaks to developers).
@@ -29,8 +29,7 @@
         status: 'building', state: 'In development', updated: null,
         loop: ['delegate', 'connect', 'automate'],
         meta: [['For', 'Whole organizations'], ['Access', 'Private']],
-        // TODO(real): product URL
-        cta: 'Explore Olympus', url: 'contact.html?topic=olympus', external: false,
+        cta: 'Explore Olympus', url: 'https://tryolympus.ai', external: true,
       },
       {
         id: 'coba', name: 'Coba', short: 'Make transactions seamless.',
@@ -39,8 +38,7 @@
         status: 'building', state: 'In development', updated: null,
         loop: ['USD', 'MXN'],
         meta: [['Corridor', 'United States ↔ Mexico'], ['Access', 'Private']],
-        // TODO(real): product URL
-        cta: 'Explore Coba', url: 'contact.html?topic=coba', external: false,
+        cta: 'Explore Coba', url: 'https://www.coba.ai/', external: true,
       },
       {
         id: 'claude-prototype', name: 'Claude Prototype', short: 'Make beautiful prototypes.',
