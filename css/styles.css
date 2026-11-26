@@ -77,14 +77,10 @@ button.text-link { padding: 0; border: 0; background: none; color: var(--blue); 
 .filter.is-active { background: var(--blue); color: var(--ground); }
 input, textarea { width: 100%; border: 1px solid var(--blue); border-radius: 0; background: var(--ground); color: var(--ink); font: inherit; padding: .65rem; }
 input::placeholder, textarea::placeholder { color: var(--text); opacity: 1; }
-textarea { min-height: 10rem; resize: vertical; }
 .contact { display: grid; gap: 2.4rem; }
 .channels li { display: flex; flex-wrap: wrap; gap: .5rem 1rem; padding: .65rem 0; border-bottom: 1px solid var(--muted); }
 .channels .k { min-width: 6rem; }
-.form-field { display: grid; gap: .35rem; margin-bottom: 1rem; }
 .error { color: var(--red); }
-.has-error input, .has-error textarea { border-color: var(--red); }
-.form-foot { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
 [hidden] { display: none !important; }
 .m-toc { border: 2px solid var(--blue); padding: 1rem 1.2rem; margin-bottom: 2.4rem; }
 .m-toc nav { display: grid; gap: .3rem; }
