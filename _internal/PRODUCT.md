@@ -14,8 +14,8 @@ Technical, optimistic, first-person, precise, unhurried. The voice says "I belie
 ## Anti-references
 - Not a corporate portfolio or agency site (no client-logo wall, no "services").
 - Not a product sales page; each project gets a promise and a link, the product sites do the converting.
-- No dark-SaaS purple/blue glow, no gradient text, no neon on pure black, no AI-sparkle iconography.
-- No accent color: ink on bone, nothing else. Status, links and buttons are all ink.
+- No dark-SaaS glow, neon on pure black, or AI-sparkle iconography. The block logo may use the blog's blue-to-violet gradient.
+- Use the blog's Tokyo Night palette and blue accent for links and borders.
 - Not a résumé timeline.
 
 ## Strategic principles
