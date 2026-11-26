@@ -12,11 +12,9 @@
   const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   const ext = (p) => p.external ? ' target="_blank" rel="noopener"' : '';
 
-  // Home: the index is the navigation; hover/focus swaps the detail pane
+  // Home index, rendered from the same project data as the project page.
   const ixList = document.querySelector('[data-render="index"]');
-  const panes = document.querySelector('[data-render="panes"]');
-  if (ixList && panes) {
-    const firstSentence = (t) => (t.match(/^.*?[.!?](\s|$)/) || [t])[0].trim();
+  if (ixList) {
     const items = [
       { id: 'manifesto', name: 'Manifesto', href: 'manifesto.html', modal: true },
       ...D.projects.map(p => ({ id: p.id, name: p.name, href: 'projects.html#' + p.id, project: p })),
@@ -27,42 +25,25 @@
         <span class="ix-n">${pad(i + 1)}</span><span class="ix-name">${esc(it.name)}</span>
         <span class="ix-promise">${esc(it.project ? it.project.promise : it.id === 'manifesto' ? D.manifesto.title : 'Code, plugins and experiments, built in public.')}</span>
       </a></li>`).join('');
-    const pane = (id, inner) => `<div class="pane" data-pane="${id}" aria-hidden="true">${inner}</div>`;
-    panes.innerHTML += [
-      ...D.projects.map((p, i) => pane(p.id, `
-        <p class="meta">${pad(i + 2)} · ${esc(p.name)}</p>
-        <p class="pane-title">${esc(p.promise)}</p>
-        <p class="pane-body">${esc(firstSentence(p.body))}</p>
-        <p class="meta-row"><span class="status" data-status="${p.status}">${esc(p.state)}</span>${p.updated ? `<span>Updated ${fmtDate(p.updated)}</span>` : ''}</p>
-        <a href="${esc(p.url)}" class="text-link"${ext(p)}>${esc(p.cta)} ${p.external ? '↗' : '→'}</a>`)),
-      pane('open-source', `
-        <p class="meta">06 · Open source</p>
-        <p class="pane-title">Building in public.</p>
-        <p class="pane-body">Some of what I build is open source. Explore the code, use the projects, contribute, or follow along as they evolve.</p>
-        <p class="meta-row"><span>${D.repos.length} public repositories</span></p>
-        <a href="open-source.html" class="text-link">Browse the code →</a>`),
-    ].join('');
-    // Manifesto shares the opening pane: it already is the belief.
-    const paneFor = (id) => (id === 'manifesto' ? 'belief' : id);
-    let current = 'belief';
-    const show = (id) => {
-      if (id === current || !panes.querySelector(`[data-pane="${paneFor(id)}"]`)) return;
-      current = id;
-      panes.querySelectorAll('[data-pane]').forEach(el => {
-        const on = el.dataset.pane === paneFor(id);
-        el.classList.toggle('is-active', on);
-        el.setAttribute('aria-hidden', String(!on));
-      });
-      ixList.querySelectorAll('[data-ix]').forEach(a => a.classList.toggle('is-current', a.dataset.ix === id));
-    };
-    show('belief'); current = 'belief';
-    panes.querySelector('[data-pane="belief"]').classList.add('is-active');
-    panes.querySelector('[data-pane="belief"]').setAttribute('aria-hidden', 'false');
-    ixList.addEventListener('mouseover', e => { const a = e.target.closest('[data-ix]'); if (a) show(a.dataset.ix); });
-    ixList.addEventListener('focusin', e => { const a = e.target.closest('[data-ix]'); if (a) show(a.dataset.ix); });
-    const stage = document.querySelector('[data-ix-stage]');
-    stage.addEventListener('mouseleave', () => show('belief'));
-    stage.addEventListener('focusout', e => { if (!stage.contains(e.relatedTarget)) show('belief'); });
+    const panes = document.querySelector('[data-render="panes"]');
+    if (panes) {
+      const firstSentence = t => (t.match(/^.*?[.!?](\s|$)/) || [t])[0].trim();
+      const pane = (id, inner) => `<div class="pane" data-pane="${id}">${inner}</div>`;
+      panes.innerHTML += [
+        ...D.projects.map((p, i) => pane(p.id, `
+          <p class="meta">${pad(i + 2)} · ${esc(p.name)}</p>
+          <p class="pane-title">${esc(p.promise)}</p>
+          <p class="pane-body">${esc(firstSentence(p.body))}</p>
+          <p class="meta-row"><span class="status" data-status="${p.status}">${esc(p.state)}</span>${p.updated ? `<span>Updated ${fmtDate(p.updated)}</span>` : ''}</p>
+          <a href="${esc(p.url)}" class="text-link"${ext(p)}>${esc(p.cta)} ${p.external ? '↗' : '→'}</a>`)),
+        pane('open-source', `
+          <p class="meta">06 · Open source</p>
+          <p class="pane-title">Building in public.</p>
+          <p class="pane-body">Some of what I build is open source. Explore the code, use the projects, contribute, or follow along as they evolve.</p>
+          <p class="meta-row"><span>${D.repos.length} public repositories</span></p>
+          <a href="open-source.html" class="text-link">Browse the code →</a>`),
+      ].join('');
+    }
   }
 
   // Manifesto (panel on home + /manifesto page)
@@ -79,7 +60,7 @@
           <span class="m-idx">${pad(i + 1)}</span>
           <div class="prose"><h2 id="${s.id}-h">${esc(s.h)}</h2>${s.p.map(t => `<p>${esc(t)}</p>`).join('')}</div>
         </section>`).join('')}
-      <div class="m-closing flex flex-col gap-8">
+      <div class="m-closing">
         <blockquote>${esc(m.closing)}</blockquote>
         <div><a href="projects.html" class="btn">See what I’m building →</a></div>
       </div>`;
