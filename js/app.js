@@ -191,53 +191,6 @@
     renderRepos();
   }
 
-  // Contact form: prefill from ?topic=, draft persistence, blur validation, send via mailto
-  const form = document.querySelector('[data-contact-form]');
-  if (form) {
-    const KEY = 'kurenn-contact-draft';
-    const fields = ['name', 'message'].map(n => form.elements[n]);
-    try {
-      const draft = JSON.parse(localStorage.getItem(KEY) || '{}');
-      fields.forEach(f => { if (draft[f.name]) f.value = draft[f.name]; });
-    } catch {}
-    const topic = window.State?.get('topic');
-    const project = D.projects.find(p => p.id === topic);
-    if (project && !form.elements.message.value) form.elements.message.value = `About ${project.name}: `;
-    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(Object.fromEntries(fields.map(f => [f.name, f.value])))); } catch {} };
-    const rules = {
-      name: v => v.trim() ? '' : 'Add your name',
-      message: v => v.trim().length >= 10 ? '' : 'Write at least a sentence',
-    };
-    const check = f => {
-      const msg = rules[f.name](f.value);
-      const wrap = f.closest('.form-field');
-      wrap.classList.toggle('has-error', !!msg);
-      wrap.querySelector('.error').textContent = msg;
-      f.setAttribute('aria-invalid', String(!!msg));
-      return !msg;
-    };
-    fields.forEach(f => {
-      f.addEventListener('blur', () => { if (f.value) check(f); });
-      f.addEventListener('input', () => { save(); if (f.closest('.has-error')) check(f); });
-    });
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const bad = fields.filter(f => !check(f));
-      if (bad.length) { bad[0].focus(); return; }
-      // ponytail: mailto hands delivery to the visitor's mail app; swap for a form endpoint if drop-off shows up
-      const name = form.elements.name.value.trim();
-      location.href = `mailto:${D.links.email}?subject=${encodeURIComponent('Hello from kurenn.dev — ' + name)}&body=${encodeURIComponent(form.elements.message.value.trim())}`;
-      const sent = document.querySelector('[data-sent]');
-      sent.querySelector('[data-sent-name]').textContent = name.split(' ')[0];
-      form.hidden = true; sent.hidden = false;
-      sent.querySelector('h2').focus();
-      try { localStorage.removeItem(KEY); } catch {}
-    });
-    document.querySelector('[data-send-another]')?.addEventListener('click', () => {
-      form.reset(); form.hidden = false; document.querySelector('[data-sent]').hidden = true; form.elements.name.focus();
-    });
-  }
-
   // Copy email
   document.querySelectorAll('[data-copy-email]').forEach(b => b.addEventListener('click', e => {
     e.preventDefault(); window.UI?.copyButton(b, D.links.email);
