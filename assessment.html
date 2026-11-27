@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI engineering assessment · Abraham Kuri</title>
+  <meta name="description" content="Three questions, two minutes. Get concrete fixes for your AI engineering setup and a prompt you can paste into Claude Code, Codex or any agent." />
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta name="theme-color" content="#1a1b26" />
+  <link rel="canonical" href="https://kurenn.dev/assessment.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kurenn.dev/assessment.html" />
+  <meta property="og:title" content="AI engineering assessment · Abraham Kuri" />
+  <meta property="og:description" content="Three questions, two minutes. Get concrete fixes for your AI engineering setup and a prompt you can paste into Claude Code, Codex or any agent." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@kurenn" />
+  <script src="js/site.js" defer></script>
+  <script src="js/assessment.js" defer></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="proto-skip" href="#main">Skip to content</a>
+  <header class="wrap top" style="view-transition-name: app-header">
+    <a href="index.html" class="name">Abraham Kuri</a>
+    <nav class="sections" aria-label="Primary"><a href="manifesto.html"><span>01</span>Manifesto</a><a href="projects.html"><span>02</span>Projects</a><a href="open-source.html"><span>03</span>Open source</a><a href="contact.html"><span>04</span>Contact</a></nav>
+  </header>
+  <main id="main" tabindex="-1" class="wrap assess">
+    <section class="g12 intro" aria-labelledby="as-h">
+      <p class="meta">Assessment</p>
+      <h1 id="as-h">AI engineering assessment</h1>
+      <div data-as-lede>
+        <p class="lead">Three questions, two minutes. You leave with concrete fixes for your engineering setup and a prompt you can paste into Claude Code, Codex or whatever agent you use.</p>
+        <p class="meta">Your answers stay in this browser tab. Nothing is sent anywhere unless you choose to email me at the end.</p>
+      </div>
+    </section>
+
+    <noscript>
+      <div class="tile"><p>The assessment needs JavaScript. Without it, <a href="contact.html">write to me</a> and we can go through it together.</p></div>
+    </noscript>
+
+    <form class="as-form" data-as-form autocomplete="off" novalidate hidden aria-label="AI engineering assessment">
+      <fieldset class="tile" data-as-group="who">
+        <legend><span class="as-n">1</span>What are you working with?</legend>
+        <div class="as-opts">
+          <label class="as-opt"><input type="radio" name="who" value="solo" /><span>Solo developer</span></label>
+          <label class="as-opt"><input type="radio" name="who" value="team" /><span>Small engineering team (2–20)</span></label>
+          <label class="as-opt"><input type="radio" name="who" value="org" /><span>Engineering org (20+)</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="tile" data-as-group="use">
+        <legend><span class="as-n">2</span>How does AI fit your engineering today?</legend>
+        <div class="as-opts">
+          <label class="as-opt"><input type="radio" name="use" value="autocomplete" /><span>Autocomplete and chat</span></label>
+          <label class="as-opt"><input type="radio" name="use" value="tasks" /><span>Coding agents on individual tasks (Claude Code, Codex, Cursor)</span></label>
+          <label class="as-opt"><input type="radio" name="use" value="prs" /><span>Agents open pull requests on their own</span></label>
+          <label class="as-opt"><input type="radio" name="use" value="production" /><span>Agents run inside production workflows</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="tile" data-as-group="problems">
+        <legend><span class="as-n">3</span>What’s breaking?</legend>
+        <p class="meta as-hint">Pick up to three. <span id="as-count" aria-live="polite">0 of 3 selected.</span></p>
+        <div class="as-opts">
+          <label class="as-opt"><input type="checkbox" name="problem" value="review" /><span>Agent output doesn’t survive review</span></label>
+          <label class="as-opt"><input type="checkbox" name="problem" value="cost" /><span>Model bills keep climbing</span></label>
+          <label class="as-opt"><input type="checkbox" name="problem" value="context" /><span>Agents forget and repeat mistakes</span></label>
+          <label class="as-opt"><input type="checkbox" name="problem" value="unattended" /><span>Scheduled agents fail silently</span></label>
+          <label class="as-opt"><input type="checkbox" name="problem" value="tests" /><span>Tests pass, bugs still ship</span></label>
+          <label class="as-opt"><input type="checkbox" name="problem" value="access" /><span>Agents have too much access</span></label>
+          <label class="as-opt"><input type="checkbox" name="problem" value="ui" /><span>Generated UI feels off</span></label>
+          <label class="as-opt"><input type="checkbox" name="problem" value="measure" /><span>We can’t tell if it’s working</span></label>
+        </div>
+      </fieldset>
+
+      <p class="error" id="as-error" role="alert"></p>
+      <div class="actions"><button type="submit" class="btn">Get my fixes →</button></div>
+    </form>
+
+    <section id="as-results" class="as-results" aria-labelledby="as-results-h" hidden></section>
+    <p class="sr-only" id="as-live" role="status" aria-live="polite"></p>
+  </main>
+  <footer class="foot">
+    <div class="wrap"><span>© 2026 Abraham Kuri</span><nav aria-label="Elsewhere"><a href="https://github.com/kurenn" target="_blank" rel="noopener">GitHub</a><a href="https://x.com/kurenn" target="_blank" rel="noopener">X</a><a href="https://www.linkedin.com/in/abraham-kuri-vargas-b41a2126/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.instagram.com/3d.kurito/" target="_blank" rel="noopener">Instagram</a></nav></div>
+  </footer>
+</body>
+</html>

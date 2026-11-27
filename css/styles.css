@@ -106,3 +106,28 @@ blockquote { margin: 1.2rem 0; border-left: 2px solid var(--violet); padding: .1
 @media (max-width: 900px) { #px { display: none; } }
 @media (max-width: 400px) { .repo-item a { grid-template-columns: 1fr; } .repo-item .r-desc { grid-column: auto; } .kv { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }
+
+/* ---------- assessment.html ---------- */
+.tile { border: 2px solid var(--blue); padding: 1rem 1.2rem; margin: 0 0 1rem; min-width: 0; }
+.assess .lead { color: var(--ink); }
+.as-form fieldset.tile { margin-inline: 0; }
+.as-form legend { color: var(--ink); font-weight: bold; padding: 0 .5rem; margin-left: -.5rem; }
+.as-n { color: var(--blue); margin-right: .6rem; }
+.as-hint { margin: 0 0 .6rem; }
+.as-opts { display: grid; gap: .25rem; }
+.as-opt { display: flex; align-items: flex-start; gap: .75rem; padding: .35rem 0; cursor: pointer; color: var(--text); }
+.as-opt input { width: 1.1rem; height: 1.1rem; margin: .4rem 0 0; padding: 0; flex: none; accent-color: var(--blue); }
+.as-opt input:disabled { cursor: not-allowed; }
+.as-opt input:disabled + span { opacity: .8; }
+.as-opt:has(input:checked) span { color: var(--ink); }
+.as-error:empty { display: none; }
+.as-error { margin: 0 0 1rem; }
+.as-results > h2 { margin: 0 0 .35rem; }
+.as-card .as-said { margin: 0; }
+.as-title { color: var(--ink); margin: .25rem 0 .7rem; }
+.as-seen, .as-related { color: var(--text); }
+.as-prompt-wrap { margin-top: 1rem; }
+.as-prompt-wrap summary { cursor: pointer; color: var(--blue); }
+.as-prompt { margin: .8rem 0; padding: .8rem; border: 1px solid var(--muted); background: var(--sel); color: var(--ink); font: inherit; font-size: .9rem; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+.as-call { margin-top: 2rem; }
+@media (max-width: 400px) { .tile { padding: .8rem .9rem; } }
